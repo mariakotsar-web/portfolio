@@ -17,11 +17,11 @@
     --bg-hover: #1A1A1A;
     --text-primary: #F5F0EB;
     --text-secondary: #A8A29E;
-    --text-tertiary: #78716C;
+    --text-tertiary: #8A8078;
     --accent: #CBB674;
     --accent-hover: #D4C48A;
     --accent-subtle: rgba(203, 182, 116, 0.12);
-    --accent-secondary: #734F96;
+    --accent-secondary: #9B7DB8;
     --border: rgba(245, 240, 235, 0.08);
     --border-hover: rgba(245, 240, 235, 0.16);
     --radius: 12px;
@@ -120,8 +120,9 @@
     transform-origin: left;
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .nav-link:hover { color: var(--text-primary); }
-  .nav-link:hover::after { transform: scaleX(1); }
+  .nav-link:hover, .nav-link:focus-visible { color: var(--text-primary); }
+  .nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); }
+  .nav-link:focus-visible { outline: none; }
 
   .nav-status {
     display: flex;
@@ -270,6 +271,9 @@
     animation: fade-up 0.6s ease 2s forwards;
     transition: color 0.3s ease, opacity 0.3s ease;
     cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
   }
   .hero-draw-hint:hover { color: var(--text-secondary); }
 
@@ -1127,7 +1131,7 @@
     <span class="line"><span class="line-inner">Maria</span></span>
   </h1>
   <p class="hero-subtitle">Design Lead at <em>Manulife Financial</em> — I thrive in the messy early stages: ideation, concepting, and design exploration. I lead teams delivering secure, scalable enterprise experiences across insurance &amp; wealth. Based in Toronto.</p>
-  <p class="hero-draw-hint" aria-hidden="true">[ double-click to sketch ]</p>
+  <button class="hero-draw-hint" aria-label="Activate drawing mode">[ double-click to sketch ]</button>
 
   <div class="hero-scroll" aria-hidden="true">
     <span>Scroll</span>
@@ -1135,7 +1139,7 @@
   </div>
 
   <!-- Hidden drawing canvas -->
-  <canvas class="hero-canvas" id="drawCanvas"></canvas>
+  <canvas class="hero-canvas" id="drawCanvas" aria-label="Drawing canvas" role="img"></canvas>
   <div class="canvas-hint" id="canvasHint">
     Drawing mode — drag to draw
     <button class="canvas-close" id="canvasClose" aria-label="Close drawing mode">&times;</button>
@@ -1159,7 +1163,7 @@
     <!-- Status card -->
     <div class="bento-tile tile-status reveal">
       <p class="tile-eyebrow">Currently</p>
-      <h3 class="tile-title">Design Lead at Manulife</h3>
+      <h2 class="tile-title">Design Lead at Manulife</h2>
       <p class="tile-desc">Leading product design for enterprise insurance &amp; wealth experiences.</p>
     </div>
 
@@ -1308,6 +1312,25 @@
     mobileNav.setAttribute('aria-hidden', !isOpen);
     navToggle.setAttribute('aria-expanded', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
+    if (isOpen) mobileNav.querySelector('.nav-link').focus();
+  });
+
+  // Focus trap for mobile nav
+  mobileNav.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      navToggle.classList.remove('active');
+      mobileNav.classList.remove('active');
+      mobileNav.setAttribute('aria-hidden', 'true');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      navToggle.focus();
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const focusable = mobileNav.querySelectorAll('.nav-link');
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
 
   mobileNav.querySelectorAll('.nav-link').forEach(link => {
