@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Built With AI | Maria Kotsar</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #000000;
+    --text: #F0F0F0;
+    --dim: #949494;
+    --cyan: #00FFE0;
+    --magenta: #FF2D78;
+    --violet: #7B61FF;
+    --surface: #0A0A0A;
+    --border: rgba(255, 255, 255, 0.04);
+  }
+
+  body {
+    font-family: 'Space Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* GRAIN */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    pointer-events: none;
+    z-index: 9000;
+    animation: grain-shift 0.5s steps(1) infinite;
+  }
+  @keyframes grain-shift {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-2%, 3%); }
+    50% { transform: translate(3%, -1%); }
+    75% { transform: translate(-3%, 2%); }
+    100% { transform: translate(1%, -2%); }
+  }
+
+  ::selection {
+    background: var(--magenta);
+    color: var(--bg);
+  }
+
+  /* MOUSE GLOW */
+  .mouse-glow {
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123, 97, 255, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: screen;
+  }
+
+  /* NAV */
+  .cs-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 24px 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .cs-nav-back {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.3s ease;
+  }
+  .cs-nav-back:hover {
+    color: var(--cyan);
+  }
+  .cs-nav-back .back-arrow {
+    width: 24px;
+    height: 1px;
+    background: var(--dim);
+    position: relative;
+    transition: width 0.3s ease, background 0.3s ease;
+  }
+  .cs-nav-back .back-arrow::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -3px;
+    width: 8px;
+    height: 8px;
+    border-left: 1px solid var(--dim);
+    border-bottom: 1px solid var(--dim);
+    transform: rotate(45deg);
+    transition: border-color 0.3s ease;
+  }
+  .cs-nav-back:hover .back-arrow {
+    width: 36px;
+    background: var(--cyan);
+  }
+  .cs-nav-back:hover .back-arrow::before {
+    border-color: var(--cyan);
+  }
+  .cs-nav-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  /* HERO */
+  .cs-hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 5vw 80px;
+    position: relative;
+  }
+  .cs-hero-tag {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--magenta);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fade-up 0.8s 0.3s forwards;
+  }
+  .cs-hero-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fade-up 0.8s 0.5s forwards;
+  }
+  .cs-hero-title .accent-cyan { color: var(--cyan); }
+  .cs-hero-title .accent-violet { color: var(--violet); }
+
+  .cs-hero-meta {
+    display: flex;
+    gap: 48px;
+    opacity: 0;
+    animation: fade-up 0.8s 0.7s forwards;
+  }
+  .cs-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cs-meta-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .cs-meta-value {
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  /* CONTENT CONTAINER */
+  .cs-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 5vw;
+  }
+
+  /* SECTION */
+  .cs-section {
+    padding: 100px 0;
+    border-top: 1px solid var(--border);
+  }
+  .cs-section:first-child {
+    border-top: none;
+  }
+
+  .cs-section-number {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 200;
+    font-size: 64px;
+    color: rgba(255, 255, 255, 0.03);
+    margin-bottom: -20px;
+  }
+
+  .cs-section-tag {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 24px;
+  }
+
+  .cs-section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    line-height: 1.1;
+  }
+
+  .cs-body {
+    font-size: 15px;
+    color: var(--dim);
+    line-height: 1.85;
+  }
+  .cs-body p + p {
+    margin-top: 20px;
+  }
+  .cs-body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+  .cs-body em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    color: var(--text);
+    font-size: 17px;
+  }
+  .cs-body a {
+    color: var(--cyan);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 255, 224, 0.3);
+    transition: border-color 0.3s ease;
+  }
+  .cs-body a:hover {
+    border-color: var(--cyan);
+  }
+
+  /* QUOTE */
+  .cs-quote {
+    margin: 48px 0;
+    padding: 32px 0 32px 32px;
+    border-left: 2px solid var(--magenta);
+  }
+  .cs-quote p {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* LIST */
+  .cs-list {
+    margin: 24px 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .cs-list li {
+    padding-left: 20px;
+    position: relative;
+    font-size: 14px;
+    color: var(--dim);
+    line-height: 1.7;
+  }
+  .cs-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: var(--cyan);
+  }
+
+  /* TOOL CARDS */
+  .cs-tools {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 40px 0;
+  }
+  .cs-tool {
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: border-color 0.3s ease;
+  }
+  .cs-tool:hover {
+    border-color: rgba(123, 97, 255, 0.2);
+  }
+  .cs-tool-name {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+  .cs-tool-desc {
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+  .cs-tool-tag {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+  }
+  .tool-cyan .cs-tool-name { color: var(--cyan); }
+  .tool-cyan .cs-tool-tag { color: var(--cyan); border-color: rgba(0, 255, 224, 0.2); }
+  .tool-magenta .cs-tool-name { color: var(--magenta); }
+  .tool-magenta .cs-tool-tag { color: var(--magenta); border-color: rgba(255, 45, 120, 0.2); }
+  .tool-violet .cs-tool-name { color: var(--violet); }
+  .tool-violet .cs-tool-tag { color: var(--violet); border-color: rgba(123, 97, 255, 0.2); }
+  .tool-text .cs-tool-name { color: var(--text); }
+  .tool-text .cs-tool-tag { color: var(--dim); }
+
+  /* PROCESS TIMELINE */
+  .cs-process {
+    margin: 48px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .cs-step {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s ease;
+  }
+  .cs-step:hover {
+    padding-left: 8px;
+  }
+  .cs-step:last-child {
+    border-bottom: none;
+  }
+  .cs-step-number {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.06);
+    transition: color 0.3s ease;
+  }
+  .cs-step:hover .cs-step-number {
+    color: var(--cyan);
+  }
+  .cs-step-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .cs-step-body {
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.7;
+  }
+
+  /* STATS ROW */
+  .cs-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 48px 0;
+  }
+  .cs-stat {
+    padding: 32px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .cs-stat-value {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-cyan .cs-stat-value { color: var(--cyan); }
+  .stat-magenta .cs-stat-value { color: var(--magenta); }
+  .stat-violet .cs-stat-value { color: var(--violet); }
+  .cs-stat-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  /* CODE BLOCK */
+  .cs-code {
+    margin: 32px 0;
+    padding: 24px 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--cyan);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--dim);
+    overflow-x: auto;
+  }
+  .cs-code .comment { color: rgba(255, 255, 255, 0.5); }
+  .cs-code .keyword { color: var(--magenta); }
+  .cs-code .string { color: var(--cyan); }
+  .cs-code .func { color: var(--violet); }
+
+  /* FULL-WIDTH IMAGE PLACEHOLDER */
+  .cs-image {
+    margin: 48px -5vw;
+    padding: 80px 5vw;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .cs-image-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 24px;
+  }
+  .cs-image-frame {
+    max-width: 720px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, rgba(0, 255, 224, 0.03), rgba(123, 97, 255, 0.03), rgba(255, 45, 120, 0.03));
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* DIVIDER */
+  .cs-divider {
+    width: 48px;
+    height: 1px;
+    background: var(--violet);
+    margin: 0 auto;
+  }
+
+  /* NEXT PROJECT */
+  .cs-next {
+    padding: 120px 5vw;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  .cs-next-label {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 24px;
+  }
+  .cs-next-link {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text);
+    transition: color 0.3s ease;
+    display: inline-block;
+  }
+  .cs-next-link:hover {
+    color: var(--cyan);
+  }
+
+  /* FOOTER */
+  .cs-footer {
+    padding: 24px 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .sr {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sr.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .sr-delay-1 { transition-delay: 0.1s; }
+  .sr-delay-2 { transition-delay: 0.2s; }
+  .sr-delay-3 { transition-delay: 0.3s; }
+
+  /* READING PROGRESS */
+  .read-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--violet), var(--magenta));
+    z-index: 200;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* SR-ONLY */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* SKIP LINK */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    padding: 12px 24px;
+    background: var(--cyan);
+    color: var(--bg);
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    text-decoration: none;
+    z-index: 9999;
+  }
+  .skip-link:focus {
+    top: 8px;
+  }
+
+  /* FOCUS STYLES */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
+
+  /* NAV BACK TOUCH TARGET */
+  .cs-nav-back {
+    min-height: 44px;
+  }
+
+  /* REDUCED MOTION */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .sr { opacity: 1; transform: none; }
+    .cs-hero-tag, .cs-hero-title, .cs-hero-meta {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .cs-hero { min-height: 60vh; padding-bottom: 60px; }
+    .cs-hero-meta { flex-direction: column; gap: 16px; }
+    .cs-tools { grid-template-columns: 1fr; }
+    .cs-stats { grid-template-columns: 1fr; }
+    .cs-step { grid-template-columns: 48px 1fr; gap: 16px; }
+    .cs-image { margin: 32px 0; padding: 40px 24px; }
+    .cs-content { padding: 0 24px; }
+    .cs-footer { flex-direction: column; gap: 8px; }
+  }
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
+<div class="read-progress" id="readProgress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<!-- NAV -->
+<nav class="cs-nav" aria-label="Case study navigation">
+  <a href="index.html" class="cs-nav-back">
+    <div class="back-arrow" aria-hidden="true"></div>
+    <span>Back to portfolio</span>
+  </a>
+  <span class="cs-nav-label">Case Study</span>
+</nav>
+
+<!-- HERO -->
+<header class="cs-hero">
+  <div class="cs-hero-tag">Case Study / 2026</div>
+  <h1 class="cs-hero-title">
+    <span class="accent-cyan">Built</span> With<br>
+    <span class="accent-violet">AI</span>
+  </h1>
+  <div class="cs-hero-meta">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Role</span>
+      <span class="cs-meta-value">Designer & Developer</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Timeline</span>
+      <span class="cs-meta-value">February — March 2026</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Tools</span>
+      <span class="cs-meta-value">Claude Code, Figma MCP, HTML/CSS/JS</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Type</span>
+      <span class="cs-meta-value">Personal Portfolio</span>
+    </div>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<main class="cs-content" id="main-content">
+
+  <!-- SECTION 1: OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-section-number sr" aria-hidden="true">01</div>
+    <div class="cs-section-tag sr">Overview</div>
+    <h2 class="cs-section-title sr">Why I built my portfolio with AI</h2>
+    <div class="cs-body sr">
+      <p>In 2026, AI tools have matured beyond novelty into genuine creative partners. As a product designer, I wanted to explore what happens when you treat AI not as a replacement for design thinking, but as an <em>amplifier</em> of it.</p>
+      <p>I set out to build my portfolio from scratch using <strong>Claude Code</strong> (Anthropic's AI coding assistant) and <strong>Figma MCP</strong> (Model Context Protocol for design-to-code workflows) — following best practices at every step.</p>
+
+      <blockquote class="cs-quote">
+        <p>The goal wasn't to see if AI could build a portfolio. It was to see if AI could help me build a better one, faster — without sacrificing craft.</p>
+      </blockquote>
+
+      <p>This case study documents the process, the decisions, the surprises, and what I learned about the future of design-engineering collaboration.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: THE TOOLS -->
+  <section class="cs-section">
+    <div class="cs-section-number sr" aria-hidden="true">02</div>
+    <div class="cs-section-tag sr">Tech Stack</div>
+    <h2 class="cs-section-title sr">The tools that made it possible</h2>
+    <div class="cs-body sr">
+      <p>I intentionally kept the stack minimal. No React, no build tools, no frameworks. Just HTML, CSS, and JavaScript — the fundamental building blocks of the web. Here's what powered the workflow:</p>
+    </div>
+    <div class="cs-tools sr">
+      <div class="cs-tool tool-cyan">
+        <h3 class="cs-tool-name">Claude Code</h3>
+        <div class="cs-tool-desc">Anthropic's AI coding assistant running in the terminal. Writes, edits, and refactors code through natural conversation. Understands entire codebases and maintains context across sessions.</div>
+        <span class="cs-tool-tag">AI Coding</span>
+      </div>
+      <div class="cs-tool tool-magenta">
+        <h3 class="cs-tool-name">Figma MCP</h3>
+        <div class="cs-tool-desc">Model Context Protocol server that bridges Figma and code. Captures live HTML pages directly into Figma files, enabling real-time design-to-code synchronization.</div>
+        <span class="cs-tool-tag">Design Bridge</span>
+      </div>
+      <div class="cs-tool tool-violet">
+        <h3 class="cs-tool-name">Figma</h3>
+        <div class="cs-tool-desc">The design tool I use daily at Manulife. Used here for visual review, component documentation, and capturing snapshots of each design iteration.</div>
+        <span class="cs-tool-tag">Design</span>
+      </div>
+      <div class="cs-tool tool-text">
+        <h3 class="cs-tool-name">HTML / CSS / JS</h3>
+        <div class="cs-tool-desc">No frameworks. No bundlers. Pure web fundamentals. A single index.html file with embedded styles and scripts — maximum simplicity, zero dependencies.</div>
+        <span class="cs-tool-tag">Frontend</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: PROCESS -->
+  <section class="cs-section">
+    <div class="cs-section-number sr" aria-hidden="true">03</div>
+    <div class="cs-section-tag sr">Process</div>
+    <h2 class="cs-section-title sr">How the workflow actually worked</h2>
+    <div class="cs-body sr">
+      <p>Working with AI isn't about typing "make me a portfolio" and watching magic happen. It's a <em>conversation</em> — iterative, directional, and deeply collaborative. Here's how each phase unfolded:</p>
+    </div>
+    <div class="cs-process sr">
+      <div class="cs-step">
+        <div class="cs-step-number" aria-hidden="true">01</div>
+        <div>
+          <h3 class="cs-step-title">Foundation & Design Tokens</h3>
+          <div class="cs-step-body">Started by establishing the visual language: color palette, typography scale, spacing system, and CSS custom properties. Claude Code generated the token system based on my design direction — dark theme, warm coral accent, three-font hierarchy.</div>
+        </div>
+      </div>
+      <div class="cs-step">
+        <div class="cs-step-number" aria-hidden="true">02</div>
+        <div>
+          <h3 class="cs-step-title">Component-by-Component Build</h3>
+          <div class="cs-step-body">Rather than generating the entire page at once, I built section by section: nav, hero, case studies, about, contact. Each component was a conversation — I described the intent, Claude wrote the code, I reviewed and iterated.</div>
+        </div>
+      </div>
+      <div class="cs-step">
+        <div class="cs-step-number" aria-hidden="true">03</div>
+        <div>
+          <h3 class="cs-step-title">Figma MCP Capture & Review</h3>
+          <div class="cs-step-body">After each milestone, I captured the live site into Figma using the MCP server. This let me review the design in my native environment, annotate changes, and compare iterations side by side — bridging code and design seamlessly.</div>
+        </div>
+      </div>
+      <div class="cs-step">
+        <div class="cs-step-number" aria-hidden="true">04</div>
+        <div>
+          <h3 class="cs-step-title">Interaction & Animation Layer</h3>
+          <div class="cs-step-body">Added micro-interactions through conversation: custom cursor, aurora gradient background, 3D tilt cards, text scramble animation, scroll-reactive typography, SVG wave dividers. Each effect described in words, implemented in code.</div>
+        </div>
+      </div>
+      <div class="cs-step">
+        <div class="cs-step-number" aria-hidden="true">05</div>
+        <div>
+          <h3 class="cs-step-title">Radical Redesign</h3>
+          <div class="cs-step-body">After the initial "Structured Warmth" concept, I asked Claude to surprise me with something completely different. The result: "NEON VOID" — a cyberpunk editorial concept with snap-scroll panels, glitch effects, and a tri-color neon palette. The entire redesign took one conversation.</div>
+        </div>
+      </div>
+      <div class="cs-step">
+        <div class="cs-step-number" aria-hidden="true">06</div>
+        <div>
+          <h3 class="cs-step-title">Content & Polish</h3>
+          <div class="cs-step-body">Final pass on copy, accessibility, responsive behavior, and performance. Claude maintained a CLAUDE.md file tracking every design decision, convention, and changelog entry — a living design system document.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMAGE BREAK -->
+  <div class="cs-image sr">
+    <div class="cs-image-label">Design Evolution</div>
+    <div class="cs-image-frame">Screenshot Placeholder — Design Iterations</div>
+  </div>
+
+  <!-- SECTION 4: BEST PRACTICES -->
+  <section class="cs-section">
+    <div class="cs-section-number sr" aria-hidden="true">04</div>
+    <div class="cs-section-tag sr">Best Practices</div>
+    <h2 class="cs-section-title sr">What I learned about working with AI</h2>
+    <div class="cs-body sr">
+      <p>AI-assisted design and development is still new territory. Through this project, I developed a set of principles that made the collaboration genuinely productive:</p>
+    </div>
+
+    <div class="cs-body sr">
+      <p><strong>1. Be the creative director, not the typist.</strong></p>
+      <p>The best results came when I focused on <em>what</em> and <em>why</em>, not <em>how</em>. Instead of dictating CSS properties, I described the feeling I wanted: "make it feel like a gallery opening" or "surprise me with something unexpected." The AI's solutions were often more creative than what I'd have written manually.</p>
+
+      <p><strong>2. Iterate in conversation, not in isolation.</strong></p>
+      <p>Each design decision was a dialogue. I'd describe a direction, review the output, and refine. This back-and-forth mirrors how I collaborate with engineers at Manulife — but compressed from days into minutes.</p>
+
+      <p><strong>3. Maintain a living design document.</strong></p>
+      <p>The CLAUDE.md file became the project's source of truth — tracking design tokens, conventions, changelogs, and Figma publish history. This persistence across sessions meant the AI always had full context, eliminating the "starting over" problem.</p>
+
+      <p><strong>4. Use Figma MCP as the quality gate.</strong></p>
+      <p>Capturing code output back into Figma created a natural review checkpoint. Seeing the design in Figma — where I think as a designer, not a developer — revealed issues I'd miss in the browser.</p>
+
+      <p><strong>5. Don't over-engineer.</strong></p>
+      <p>One of Claude's best qualities was restraint. No unnecessary frameworks, no premature abstractions. A single HTML file with embedded styles. The simplest solution that achieves the goal — a principle that applies to design and code equally.</p>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="cs-stats sr">
+    <div class="cs-stat stat-cyan">
+      <div class="cs-stat-value">1</div>
+      <div class="cs-stat-label">HTML File</div>
+    </div>
+    <div class="cs-stat stat-magenta">
+      <div class="cs-stat-value">0</div>
+      <div class="cs-stat-label">Dependencies</div>
+    </div>
+    <div class="cs-stat stat-violet">
+      <div class="cs-stat-value">3</div>
+      <div class="cs-stat-label">Design Concepts</div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: THE FIGMA BRIDGE -->
+  <section class="cs-section">
+    <div class="cs-section-number sr" aria-hidden="true">05</div>
+    <div class="cs-section-tag sr">Figma MCP</div>
+    <h2 class="cs-section-title sr">Bridging design and code</h2>
+    <div class="cs-body sr">
+      <p>The Figma MCP server was the most surprising tool in this workflow. Here's how it worked:</p>
+    </div>
+
+    <div class="cs-body sr">
+      <ul class="cs-list">
+        <li><strong>Live capture:</strong> With one command, the running localhost page was captured and converted into editable Figma layers — not a screenshot, but actual vector objects with text, colors, and layout preserved.</li>
+        <li><strong>Design review:</strong> Each capture went to the same Figma file, creating a visual timeline of the portfolio's evolution from initial concept to final design.</li>
+        <li><strong>Design-to-code:</strong> The MCP server also works in reverse — reading Figma designs and generating code. This creates a true bidirectional workflow between design and development.</li>
+        <li><strong>Component mapping:</strong> Code Connect mappings linked Figma components to their code implementations, maintaining consistency between design and production.</li>
+      </ul>
+    </div>
+
+    <div class="cs-code sr">
+      <span class="comment">// The capture workflow in practice</span><br>
+      <span class="keyword">1.</span> Make design changes in code via Claude<br>
+      <span class="keyword">2.</span> Preview in browser at <span class="string">localhost:8080</span><br>
+      <span class="keyword">3.</span> Capture to Figma via <span class="func">MCP server</span><br>
+      <span class="keyword">4.</span> Review in Figma, annotate feedback<br>
+      <span class="keyword">5.</span> Iterate — back to step 1
+    </div>
+  </section>
+
+  <!-- IMAGE BREAK -->
+  <div class="cs-image sr">
+    <div class="cs-image-label">Figma Capture Timeline</div>
+    <div class="cs-image-frame">Screenshot Placeholder — Figma File Evolution</div>
+  </div>
+
+  <!-- SECTION 6: DESIGN EVOLUTION -->
+  <section class="cs-section">
+    <div class="cs-section-number sr" aria-hidden="true">06</div>
+    <div class="cs-section-tag sr">Evolution</div>
+    <h2 class="cs-section-title sr">Three concepts, one conversation</h2>
+    <div class="cs-body sr">
+      <p>The portfolio went through three distinct visual concepts — each a dramatic departure from the last:</p>
+
+      <p><strong>Concept 1: "Structured Warmth"</strong><br>
+      The initial direction. Dark theme with warm coral accent (#FF7A5C), Space Grotesk + Inter typography, rounded cards with 3D tilt effects, aurora gradient background. Professional and polished — a safe, solid foundation.</p>
+
+      <p><strong>Concept 2: "Structured Warmth, Elevated"</strong><br>
+      Same visual language, but with 2026 interaction trends: scroll-reactive kinetic typography, snap-scroll sections, SVG wave dividers with mouse proximity effects, section dot navigation, and a personality-driven footer.</p>
+
+      <p><strong>Concept 3: "NEON VOID"</strong><br>
+      A complete departure. Pure black, sharp edges, cyberpunk neon palette, film grain texture, glitch animations, Unbounded display font, editorial magazine layout. Born from a single prompt: <em>"Surprise me. Go crazy."</em></p>
+    </div>
+
+    <blockquote class="cs-quote sr">
+      <p>The ability to explore radically different directions in minutes — not days — fundamentally changes how a designer can think about creative exploration.</p>
+    </blockquote>
+  </section>
+
+  <!-- SECTION 7: REFLECTION -->
+  <section class="cs-section">
+    <div class="cs-section-number sr" aria-hidden="true">07</div>
+    <div class="cs-section-tag sr">Reflection</div>
+    <h2 class="cs-section-title sr">What this means for design</h2>
+    <div class="cs-body sr">
+      <p>This project convinced me that AI-assisted design isn't about replacing designers. It's about <em>removing the friction between thinking and making.</em></p>
+
+      <p>As a design lead, I spend most of my time on strategy, systems thinking, and team mentorship. The actual pixel-pushing and code-writing often feels like a bottleneck between idea and execution. AI tools like Claude Code collapse that gap.</p>
+
+      <p>But the human elements remain essential: <strong>taste</strong>, <strong>judgment</strong>, <strong>creative direction</strong>, and <strong>knowing what "good" looks like</strong>. The AI doesn't know your brand. It doesn't know your users. It doesn't know which rules to break. That's still — and will always be — the designer's job.</p>
+
+      <p>What changes is velocity. What changes is the breadth of exploration possible in a single session. What changes is the accessibility of code as a design medium.</p>
+
+      <p><em>The future of design isn't AI or human. It's AI and human, working in conversation.</em></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- NEXT -->
+<nav class="cs-next" aria-label="Next project">
+  <div class="cs-next-label sr">Up Next</div>
+  <a href="index.html" class="cs-next-link sr">Back to Portfolio <span aria-hidden="true">&rarr;</span></a>
+</nav>
+
+<!-- FOOTER -->
+<footer class="cs-footer">
+  <span>&copy; 2026 Maria Kotsar</span>
+  <span>Built with Claude Code & Figma MCP</span>
+</footer>
+
+<script>
+  // Mouse glow
+  const glow = document.getElementById('mouseGlow');
+  document.addEventListener('mousemove', (e) => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+
+  // Scroll reveal
+  const srObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.sr').forEach(el => srObserver.observe(el));
+
+  // Reading progress
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    const bar = document.getElementById('readProgress');
+    bar.style.width = pct + '%';
+    bar.setAttribute('aria-valuenow', Math.round(pct));
+  });
+</script>
+
+</body>
+</html>

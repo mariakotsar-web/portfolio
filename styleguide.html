@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEON VOID — Design System Style Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #000000;
+    --text: #F0F0F0;
+    --dim: #949494;
+    --cyan: #00FFE0;
+    --magenta: #FF2D78;
+    --violet: #7B61FF;
+  }
+  body {
+    font-family: 'Space Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    padding: 80px 60px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* ===== STYLE GUIDE FRAMEWORK ===== */
+  .sg-cover {
+    margin-bottom: 120px;
+    padding-bottom: 80px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .sg-cover-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 32px;
+  }
+  .sg-cover-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 80px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .sg-cover-title span { color: var(--cyan); }
+  .sg-cover-sub {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 24px;
+    color: var(--dim);
+    max-width: 600px;
+  }
+  .sg-cover-meta {
+    margin-top: 40px;
+    display: flex;
+    gap: 48px;
+  }
+  .sg-meta-item {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .sg-meta-item strong {
+    display: block;
+    color: var(--text);
+    font-size: 14px;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-top: 6px;
+  }
+
+  .sg-section {
+    margin-bottom: 120px;
+  }
+  .sg-section-num {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 200;
+    font-size: 80px;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    margin-bottom: -20px;
+  }
+  .sg-section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .sg-section-desc {
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 48px;
+  }
+  .sg-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin: 80px 0;
+  }
+  .sg-sub-title {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 24px;
+  }
+  .sg-note {
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+  .sg-spec {
+    display: inline-block;
+    padding: 3px 8px;
+    background: rgba(255,255,255,0.04);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+
+  /* ===== 01: COLORS ===== */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .color-card {
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+  }
+  .color-swatch {
+    height: 120px;
+  }
+  .color-info {
+    padding: 16px 20px;
+  }
+  .color-name {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .color-token {
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+  }
+  .color-hex {
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 4px;
+  }
+
+  .color-grid-small {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .color-chip {
+    text-align: center;
+  }
+  .color-chip-swatch {
+    height: 48px;
+    border: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 8px;
+  }
+  .color-chip-label {
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== 02: TYPOGRAPHY ===== */
+  .type-specimen {
+    margin-bottom: 48px;
+    padding: 40px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .type-family-name {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--magenta);
+    margin-bottom: 20px;
+  }
+  .type-sample-row {
+    display: flex;
+    align-items: baseline;
+    gap: 32px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .type-sample-row:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .type-sample-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    min-width: 120px;
+    flex-shrink: 0;
+  }
+  .type-sample-text {
+    flex: 1;
+  }
+  .type-sample-specs {
+    font-size: 9px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.1em;
+    min-width: 200px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .type-scale {
+    display: grid;
+    gap: 0;
+    margin-bottom: 48px;
+  }
+  .type-scale-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 200px;
+    align-items: baseline;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .type-scale-name {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .type-scale-specs {
+    font-size: 9px;
+    color: rgba(255,255,255,0.25);
+    text-align: right;
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== 03: SPACING ===== */
+  .spacing-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .spacing-item {
+    text-align: center;
+  }
+  .spacing-block {
+    background: var(--cyan);
+    opacity: 0.15;
+    margin: 0 auto 12px;
+  }
+  .spacing-value {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .spacing-label {
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== 04: EFFECTS ===== */
+  .effects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .effect-card {
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 32px;
+  }
+  .effect-title {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 16px;
+  }
+  .effect-preview {
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .effect-specs {
+    font-size: 10px;
+    color: var(--dim);
+    line-height: 1.8;
+  }
+
+  /* ===== 05: BORDERS ===== */
+  .border-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .border-sample {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+  }
+
+  /* ===== 06: COMPONENTS ===== */
+  .comp-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .comp-card {
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+  }
+  .comp-label {
+    padding: 10px 20px;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .comp-label-default { color: var(--dim); }
+  .comp-label-hover { color: var(--cyan); }
+  .comp-label-focus { color: var(--violet); }
+  .comp-label-active { color: var(--magenta); }
+  .comp-preview {
+    padding: 32px;
+  }
+  .comp-preview.no-pad { padding: 0; }
+
+  .comp-full {
+    margin-bottom: 24px;
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+  }
+  .comp-full .comp-label {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Component demos */
+  .btn-demo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 36px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary-d { border-color: var(--cyan); color: var(--cyan); }
+  .btn-primary-h { border-color: var(--cyan); color: var(--bg); background: var(--cyan); }
+  .btn-ghost-d { border-color: rgba(255,255,255,0.12); color: var(--dim); }
+  .btn-ghost-h { border-color: rgba(255,255,255,0.3); color: var(--text); background: rgba(255,255,255,0.06); }
+  .btn-focus { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+  .tag-demo {
+    display: inline-block;
+    padding: 6px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .tag-default { border: 1px solid rgba(255,255,255,0.08); color: var(--dim); }
+  .tag-hover { border: 1px solid var(--violet); color: var(--violet); }
+
+  .exp-demo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .exp-company { font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: -0.01em; }
+  .exp-role { font-size: 12px; color: var(--dim); margin-top: 4px; }
+  .exp-date { font-size: 11px; color: var(--dim); letter-spacing: 0.1em; }
+  .exp-demo.is-hover { padding-left: 12px; border-bottom-color: rgba(255,255,255,0.1); }
+  .exp-demo.is-hover .exp-company { color: var(--cyan); }
+
+  .tile-demo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+    min-height: 280px;
+    overflow: hidden;
+  }
+  .tile-demo::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0; z-index: 0;
+  }
+  .tile-reel-d { background: #050505; }
+  .tile-reel-d::before { background: linear-gradient(135deg, rgba(0,255,224,0.08), rgba(123,97,255,0.08)); }
+  .tile-case-d { background: #030303; }
+  .tile-case-d::before { background: linear-gradient(135deg, rgba(255,45,120,0.08), rgba(123,97,255,0.08)); }
+  .tile-demo.is-hover::before { opacity: 1; }
+
+  .tile-demo .t-number {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 80px; font-weight: 200; line-height: 0.8;
+    color: rgba(255,255,255,0.02);
+    position: absolute; top: 16px; right: 16px; z-index: 0;
+  }
+  .tile-demo.is-hover .t-number-cyan { color: rgba(0,255,224,0.06); }
+  .tile-demo.is-hover .t-number-mag { color: rgba(255,45,120,0.06); }
+
+  .tile-demo .t-content { position: relative; z-index: 1; }
+  .tile-demo .t-eyebrow { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; margin-bottom: 10px; }
+  .tile-demo .t-heading { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 28px; line-height: 1; letter-spacing: -0.03em; text-transform: uppercase; margin-bottom: 12px; }
+  .tile-demo.is-hover .t-heading { transform: translateX(12px); }
+  .tile-demo .t-desc { font-size: 12px; color: var(--dim); line-height: 1.6; max-width: 280px; }
+  .tile-demo.is-hover .t-desc { color: var(--text); }
+  .tile-demo .t-arrow { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
+  .tile-demo .t-line { height: 1px; width: 32px; }
+  .tile-demo.is-hover .t-line { width: 64px; }
+
+  .tile-demo .play-circle {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px;
+    border: 1px solid rgba(0,255,224,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; z-index: 1;
+  }
+  .tile-demo .play-circle svg { width: 16px; height: 16px; fill: var(--cyan); margin-left: 2px; }
+  .tile-demo.is-hover .play-circle {
+    border-color: var(--cyan);
+    box-shadow: 0 0 60px rgba(0,255,224,0.15);
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+  /* Hero name demos */
+  .hero-demo {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900; font-size: 56px; line-height: 0.85;
+    letter-spacing: -0.04em; text-transform: uppercase;
+  }
+  .hero-demo .h-line1 { display: block; -webkit-text-stroke: 2px var(--text); color: transparent; }
+  .hero-demo .h-line2 { display: block; color: var(--text); position: relative; }
+  .hero-demo.is-hover .h-line1 { -webkit-text-stroke: 2px var(--cyan); color: var(--cyan); text-shadow: 0 0 60px rgba(0,255,224,0.4); }
+  .hero-demo.is-hover .h-line2::after {
+    content: 'KOTSAR'; position: absolute; top: 3px; left: 3px;
+    color: var(--magenta); opacity: 0.6; z-index: -1;
+  }
+  .hero-demo.is-glitch .h-line1 { -webkit-text-stroke: 2px var(--cyan); color: var(--cyan); text-shadow: 0 0 60px rgba(0,255,224,0.4); }
+  .hero-demo.is-glitch .h-line2::after {
+    content: 'K0T$@R'; position: absolute; top: 3px; left: 3px;
+    color: var(--magenta); opacity: 0.6; z-index: -1;
+  }
+
+  /* Overlay demo */
+  .overlay-mini {
+    background: rgba(0,0,0,0.96);
+    min-height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .overlay-mini .close-x {
+    position: absolute; top: 16px; right: 16px;
+    width: 40px; height: 40px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: none; color: var(--text);
+    font-size: 18px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace;
+  }
+  .overlay-mini .close-x.is-hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* Footer demos */
+  .footer-demo { font-size: 11px; color: var(--dim); letter-spacing: 0.1em; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+  .footer-demo.is-hover { color: var(--cyan); }
+
+  /* Gradient text */
+  .gradient-demo {
+    font-family: 'Unbounded', sans-serif; font-weight: 800;
+    font-size: 56px; line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase;
+    background: linear-gradient(135deg, var(--cyan), var(--violet), var(--magenta));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; background-size: 200% 200%;
+  }
+  .gradient-pos-1 { background-position: 0% 50%; }
+  .gradient-pos-2 { background-position: 50% 50%; }
+  .gradient-pos-3 { background-position: 100% 50%; }
+
+  /* Animation specs table */
+  .anim-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .anim-table th {
+    text-align: left;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dim);
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .anim-table td {
+    font-size: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    color: var(--text);
+  }
+  .anim-table td:first-child {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+  .anim-table .val { color: var(--cyan); font-size: 11px; }
+
+  /* Grid demo */
+  .grid-demo {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .grid-cell {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 20px;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+    text-align: center;
+  }
+
+  /* Accessibility section */
+  .a11y-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .a11y-card {
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 32px;
+  }
+  .a11y-title {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 16px;
+  }
+  .a11y-sample {
+    margin-bottom: 16px;
+  }
+  .a11y-specs {
+    font-size: 10px;
+    color: var(--dim);
+    line-height: 1.8;
+  }
+  .pass-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    margin-left: 8px;
+  }
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+
+<!-- ============================================================
+     COVER
+     ============================================================ -->
+<div class="sg-cover">
+  <p class="sg-cover-label">Design System / Style Guide</p>
+  <h1 class="sg-cover-title">Neon<br><span>Void</span></h1>
+  <p class="sg-cover-sub">A cyberpunk-inspired design system built on pure black, neon accents, and editorial typography. Designed for Maria Kotsar's portfolio, 2026.</p>
+  <div class="sg-cover-meta">
+    <div class="sg-meta-item">Version<strong>1.0</strong></div>
+    <div class="sg-meta-item">Last Updated<strong>March 2026</strong></div>
+    <div class="sg-meta-item">Designer<strong>Maria Kotsar</strong></div>
+    <div class="sg-meta-item">Theme<strong>Dark Only</strong></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     01: COLOR SYSTEM
+     ============================================================ -->
+<div class="sg-section">
+  <div class="sg-section-num">01</div>
+  <h2 class="sg-section-title">Color System</h2>
+  <p class="sg-section-desc">A neon-on-black palette. Three accent colors define the visual hierarchy: cyan for primary actions, magenta for secondary/highlight, violet for tertiary accents.</p>
+
+  <p class="sg-sub-title">Core Palette</p>
+  <div class="color-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background: #000000;"></div>
+      <div class="color-info">
+        <div class="color-name">Background</div>
+        <div class="color-token">--bg</div>
+        <div class="color-hex">#000000 · Pure Black</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background: #F0F0F0;"></div>
+      <div class="color-info">
+        <div class="color-name" style="color: #000;">Text Primary</div>
+        <div class="color-token" style="color: #666;">--text</div>
+        <div class="color-hex" style="color: #666;">#F0F0F0 · Near White</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background: #949494;"></div>
+      <div class="color-info">
+        <div class="color-name">Text Secondary</div>
+        <div class="color-token">--dim</div>
+        <div class="color-hex">#949494 · WCAG AA ✓</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sg-sub-title">Accent Colors</p>
+  <div class="color-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background: #00FFE0;"></div>
+      <div class="color-info">
+        <div class="color-name" style="color: #000;">Cyan — Primary</div>
+        <div class="color-token" style="color: #666;">--cyan</div>
+        <div class="color-hex" style="color: #666;">#00FFE0 · Actions, links, focus</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background: #FF2D78;"></div>
+      <div class="color-info">
+        <div class="color-name">Magenta — Secondary</div>
+        <div class="color-token">--magenta</div>
+        <div class="color-hex">#FF2D78 · Highlights, glitch</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background: #7B61FF;"></div>
+      <div class="color-info">
+        <div class="color-name">Violet — Tertiary</div>
+        <div class="color-token">--violet</div>
+        <div class="color-hex">#7B61FF · About, tags, subtle</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sg-sub-title">Surface Colors</p>
+  <div class="color-grid-small">
+    <div class="color-chip">
+      <div class="color-chip-swatch" style="background: #050505;"></div>
+      <div class="color-chip-label">Tile Reel<br>#050505</div>
+    </div>
+    <div class="color-chip">
+      <div class="color-chip-swatch" style="background: #030303;"></div>
+      <div class="color-chip-label">Tile Case<br>#030303</div>
+    </div>
+    <div class="color-chip">
+      <div class="color-chip-swatch" style="background: rgba(0,0,0,0.96); border: 1px solid rgba(255,255,255,0.06);"></div>
+      <div class="color-chip-label">Overlay<br>black/96%</div>
+    </div>
+    <div class="color-chip">
+      <div class="color-chip-swatch" style="background: rgba(255,255,255,0.04);"></div>
+      <div class="color-chip-label">Border Subtle<br>white/4%</div>
+    </div>
+    <div class="color-chip">
+      <div class="color-chip-swatch" style="background: rgba(255,255,255,0.06);"></div>
+      <div class="color-chip-label">Border Medium<br>white/6%</div>
+    </div>
+    <div class="color-chip">
+      <div class="color-chip-swatch" style="background: rgba(255,255,255,0.12);"></div>
+      <div class="color-chip-label">Border Strong<br>white/12%</div>
+    </div>
+  </div>
+
+  <p class="sg-sub-title">Selection</p>
+  <p class="sg-note"><span class="sg-spec">::selection</span> Background: <span style="color:var(--magenta)">--magenta</span> · Text: <span>--bg</span></p>
+</div>
+
+<!-- ============================================================
+     02: TYPOGRAPHY
+     ============================================================ -->
+<div class="sg-section">
+  <div class="sg-section-num">02</div>
+  <h2 class="sg-section-title">Typography</h2>
+  <p class="sg-section-desc">Three-font system: Unbounded for impact display, Space Mono for interface and body, Instrument Serif for editorial warmth. All loaded via Google Fonts.</p>
+
+  <p class="sg-sub-title">Font Families</p>
+
+  <div class="type-specimen">
+    <p class="type-family-name">Unbounded — Display / Headings</p>
+    <div class="type-sample-row">
+      <span class="type-sample-label">Black 900</span>
+      <span class="type-sample-text" style="font-family:'Unbounded',sans-serif; font-weight:900; font-size:48px; letter-spacing:-0.04em; text-transform:uppercase; line-height:0.9;">Maria Kotsar</span>
+      <span class="type-sample-specs">Hero name · clamp(5rem, 15vw, 14rem)</span>
+    </div>
+    <div class="type-sample-row">
+      <span class="type-sample-label">Bold 700</span>
+      <span class="type-sample-text" style="font-family:'Unbounded',sans-serif; font-weight:700; font-size:32px; letter-spacing:-0.03em; text-transform:uppercase; line-height:1;">Watch My Reel</span>
+      <span class="type-sample-specs">Tile heading · clamp(2rem, 4vw, 3.5rem)</span>
+    </div>
+    <div class="type-sample-row">
+      <span class="type-sample-label">SemiBold 600</span>
+      <span class="type-sample-text" style="font-family:'Unbounded',sans-serif; font-weight:600; font-size:18px; letter-spacing:-0.01em;">Manulife</span>
+      <span class="type-sample-specs">Company name · 18px</span>
+    </div>
+    <div class="type-sample-row">
+      <span class="type-sample-label">ExtraLight 200</span>
+      <span class="type-sample-text" style="font-family:'Unbounded',sans-serif; font-weight:200; font-size:64px; color:rgba(255,255,255,0.06); line-height:0.8;">01</span>
+      <span class="type-sample-specs">Tile number · clamp(8rem, 20vw, 16rem)</span>
+    </div>
+  </div>
+
+  <div class="type-specimen">
+    <p class="type-family-name">Space Mono — Interface / Body</p>
+    <div class="type-sample-row">
+      <span class="type-sample-label">Bold 700</span>
+      <span class="type-sample-text" style="font-family:'Space Mono',monospace; font-weight:700; font-size:14px;">The quick brown fox jumps</span>
+      <span class="type-sample-specs">Emphasis text</span>
+    </div>
+    <div class="type-sample-row">
+      <span class="type-sample-label">Regular 400</span>
+      <span class="type-sample-text" style="font-family:'Space Mono',monospace; font-weight:400; font-size:14px; color:var(--dim); line-height:1.7;">I lead design teams, build systems, and obsess over the details that make products feel effortless.</span>
+      <span class="type-sample-specs">Body · 14-15px / 1.7-1.8 lh</span>
+    </div>
+    <div class="type-sample-row">
+      <span class="type-sample-label">Regular 400</span>
+      <span class="type-sample-text" style="font-family:'Space Mono',monospace; font-weight:400; font-size:12px; letter-spacing:0.15em; text-transform:uppercase;">Send Email</span>
+      <span class="type-sample-specs">Button · 12px / 0.15em ls</span>
+    </div>
+    <div class="type-sample-row">
+      <span class="type-sample-label">Regular 400</span>
+      <span class="type-sample-text" style="font-family:'Space Mono',monospace; font-weight:400; font-size:10px; letter-spacing:0.35em; text-transform:uppercase; color:var(--cyan);">Product Designer / Toronto</span>
+      <span class="type-sample-specs">Eyebrow · 10-12px / 0.3-0.35em ls</span>
+    </div>
+  </div>
+
+  <div class="type-specimen">
+    <p class="type-family-name">Instrument Serif — Editorial / Accent</p>
+    <div class="type-sample-row">
+      <span class="type-sample-label">Italic 400</span>
+      <span class="type-sample-text" style="font-family:'Instrument Serif',serif; font-style:italic; font-size:36px; line-height:1.15; letter-spacing:-0.02em;">Designing at the intersection of <span style="color:var(--violet)">craft</span> and <span style="color:var(--violet)">scale</span></span>
+      <span class="type-sample-specs">About headline · clamp(2.5rem, 5vw, 4.5rem)</span>
+    </div>
+    <div class="type-sample-row">
+      <span class="type-sample-label">Italic 400</span>
+      <span class="type-sample-text" style="font-family:'Instrument Serif',serif; font-style:italic; font-size:18px; color:var(--dim);">Design Lead crafting digital experiences at <span style="color:var(--magenta)">Manulife</span></span>
+      <span class="type-sample-specs">Role text · clamp(1.2rem, 2.5vw, 2.2rem)</span>
+    </div>
+  </div>
+
+  <p class="sg-sub-title">Type Scale</p>
+  <div class="type-scale">
+    <div class="type-scale-row">
+      <span class="type-scale-name">Display XL</span>
+      <span style="font-family:'Unbounded',sans-serif; font-weight:900; font-size:40px; letter-spacing:-0.04em; text-transform:uppercase; line-height:0.85;">KOTSAR</span>
+      <span class="type-scale-specs">clamp(5rem, 15vw, 14rem) / 0.85 / -0.04em</span>
+    </div>
+    <div class="type-scale-row">
+      <span class="type-scale-name">Display LG</span>
+      <span style="font-family:'Unbounded',sans-serif; font-weight:800; font-size:36px; letter-spacing:-0.04em; text-transform:uppercase; line-height:0.9;">LET'S TALK</span>
+      <span class="type-scale-specs">clamp(3rem, 10vw, 9rem) / 0.9 / -0.04em</span>
+    </div>
+    <div class="type-scale-row">
+      <span class="type-scale-name">Heading LG</span>
+      <span style="font-family:'Instrument Serif',serif; font-style:italic; font-size:32px; line-height:1.15; letter-spacing:-0.02em;">Craft and scale</span>
+      <span class="type-scale-specs">clamp(2.5rem, 5vw, 4.5rem) / 1.15 / -0.02em</span>
+    </div>
+    <div class="type-scale-row">
+      <span class="type-scale-name">Heading MD</span>
+      <span style="font-family:'Unbounded',sans-serif; font-weight:700; font-size:28px; letter-spacing:-0.03em; text-transform:uppercase; line-height:1;">Built With AI</span>
+      <span class="type-scale-specs">clamp(2rem, 4vw, 3.5rem) / 1.0 / -0.03em</span>
+    </div>
+    <div class="type-scale-row">
+      <span class="type-scale-name">Heading SM</span>
+      <span style="font-family:'Unbounded',sans-serif; font-weight:700; font-size:24px; letter-spacing:-0.02em; text-transform:uppercase;">Reel Coming Soon</span>
+      <span class="type-scale-specs">24px / auto / -0.02em</span>
+    </div>
+    <div class="type-scale-row">
+      <span class="type-scale-name">Body LG</span>
+      <span style="font-family:'Instrument Serif',serif; font-style:italic; font-size:20px; color:var(--dim); line-height:1.5;">Always open to great conversations.</span>
+      <span class="type-scale-specs">clamp(1.2rem, 2.5vw, 2.2rem) / 1.5</span>
+    </div>
+    <div class="type-scale-row">
+      <span class="type-scale-name">Body</span>
+      <span style="font-family:'Space Mono',monospace; font-size:15px; color:var(--dim); line-height:1.8;">I lead design teams and build systems.</span>
+      <span class="type-scale-specs">14-15px / 1.7-1.8</span>
+    </div>
+    <div class="type-scale-row">
+      <span class="type-scale-name">Label</span>
+      <span style="font-family:'Space Mono',monospace; font-size:12px; letter-spacing:0.15em; text-transform:uppercase;">Send Email</span>
+      <span class="type-scale-specs">12px / auto / 0.15em</span>
+    </div>
+    <div class="type-scale-row">
+      <span class="type-scale-name">Eyebrow</span>
+      <span style="font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.35em; text-transform:uppercase; color:var(--cyan);">Case Study</span>
+      <span class="type-scale-specs">10px / auto / 0.3-0.35em</span>
+    </div>
+    <div class="type-scale-row">
+      <span class="type-scale-name">Caption</span>
+      <span style="font-family:'Space Mono',monospace; font-size:10px; color:var(--dim); letter-spacing:0.15em;">43.6532° N, 79.3832° W</span>
+      <span class="type-scale-specs">10px / auto / 0.15em</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     03: SPACING
+     ============================================================ -->
+<div class="sg-section">
+  <div class="sg-section-num">03</div>
+  <h2 class="sg-section-title">Spacing System</h2>
+  <p class="sg-section-desc">Base-8 spacing system with fluid viewport-relative values for major layout sections. Fixed pixel values for component-level spacing.</p>
+
+  <p class="sg-sub-title">Spacing Scale</p>
+  <div class="spacing-grid">
+    <div class="spacing-item">
+      <div class="spacing-block" style="width:4px; height:4px;"></div>
+      <div class="spacing-value">4</div>
+      <div class="spacing-label">3XS</div>
+    </div>
+    <div class="spacing-item">
+      <div class="spacing-block" style="width:8px; height:8px;"></div>
+      <div class="spacing-value">8</div>
+      <div class="spacing-label">2XS</div>
+    </div>
+    <div class="spacing-item">
+      <div class="spacing-block" style="width:12px; height:12px;"></div>
+      <div class="spacing-value">12</div>
+      <div class="spacing-label">XS</div>
+    </div>
+    <div class="spacing-item">
+      <div class="spacing-block" style="width:16px; height:16px;"></div>
+      <div class="spacing-value">16</div>
+      <div class="spacing-label">SM</div>
+    </div>
+    <div class="spacing-item">
+      <div class="spacing-block" style="width:24px; height:24px;"></div>
+      <div class="spacing-value">24</div>
+      <div class="spacing-label">MD</div>
+    </div>
+    <div class="spacing-item">
+      <div class="spacing-block" style="width:32px; height:32px;"></div>
+      <div class="spacing-value">32</div>
+      <div class="spacing-label">LG</div>
+    </div>
+    <div class="spacing-item">
+      <div class="spacing-block" style="width:48px; height:48px;"></div>
+      <div class="spacing-value">48</div>
+      <div class="spacing-label">XL</div>
+    </div>
+    <div class="spacing-item">
+      <div class="spacing-block" style="width:60px; height:60px;"></div>
+      <div class="spacing-value">60–80</div>
+      <div class="spacing-label">2XL</div>
+    </div>
+  </div>
+
+  <p class="sg-sub-title">Layout Spacing</p>
+  <p class="sg-note"><span class="sg-spec">Section padding</span> 80px vertical · 60px horizontal (5vw fluid) <br><span class="sg-spec">Panel height</span> 100vh snap-scroll sections <br><span class="sg-spec">Grid gap</span> 24px (tiles: 0 — edge-to-edge) <br><span class="sg-spec">Container max</span> Full-width, 5vw side padding <br><span class="sg-spec">Mobile padding</span> 60px vertical · 24px horizontal</p>
+</div>
+
+<!-- ============================================================
+     04: GRID & LAYOUT
+     ============================================================ -->
+<div class="sg-section">
+  <div class="sg-section-num">04</div>
+  <h2 class="sg-section-title">Grid & Layout</h2>
+  <p class="sg-section-desc">Full-viewport snap-scroll panels with CSS Grid for internal layouts. 50/50 split for work tiles and about section. Single-column mobile at 768px.</p>
+
+  <p class="sg-sub-title">Hero — Single Column, Centered</p>
+  <div class="grid-demo" style="grid-template-columns: 1fr; min-height: 100px;">
+    <div class="grid-cell" style="padding: 40px;">HERO · Full-width · Centered vertically · padding: 0 5vw</div>
+  </div>
+
+  <p class="sg-sub-title">Work — 50/50 Split</p>
+  <div class="grid-demo" style="grid-template-columns: 1fr 1fr;">
+    <div class="grid-cell" style="border-right: 1px solid var(--cyan); padding: 30px;">TILE REEL · #050505<br>flex-end aligned</div>
+    <div class="grid-cell" style="padding: 30px;">TILE CASE · #030303<br>flex-end aligned</div>
+  </div>
+
+  <p class="sg-sub-title">About — 50/50 Split</p>
+  <div class="grid-demo" style="grid-template-columns: 1fr 1fr;">
+    <div class="grid-cell" style="border-right: 1px solid rgba(255,255,255,0.04); padding: 30px;">LEFT · Headline + Body<br>padding: 80px 60px</div>
+    <div class="grid-cell" style="padding: 30px;">RIGHT · Experience + Skills<br>padding: 80px 60px</div>
+  </div>
+
+  <p class="sg-sub-title">Contact — Single Column, Centered</p>
+  <div class="grid-demo" style="grid-template-columns: 1fr; min-height: 80px;">
+    <div class="grid-cell" style="text-align:center; padding: 30px;">CONTACT · text-align: center · padding: 80px 5vw</div>
+  </div>
+
+  <p class="sg-sub-title">Mobile Breakpoint — 768px</p>
+  <p class="sg-note"><span class="sg-spec">Work tiles</span> stack to single column, min-height: 70vh <br><span class="sg-spec">About</span> stack to single column, border switches from right to bottom <br><span class="sg-spec">Contact buttons</span> stack vertically <br><span class="sg-spec">Snap-scroll</span> disabled <br><span class="sg-spec">Footer</span> centered column</p>
+</div>
+
+<!-- ============================================================
+     05: EFFECTS & SURFACES
+     ============================================================ -->
+<div class="sg-section">
+  <div class="sg-section-num">05</div>
+  <h2 class="sg-section-title">Effects & Surfaces</h2>
+  <p class="sg-section-desc">Layered ambient effects create depth on pure black. Film grain, mouse glow, gradient overlays, and neon glows.</p>
+
+  <div class="effects-grid">
+    <div class="effect-card">
+      <p class="effect-title">Film Grain Noise</p>
+      <div class="effect-preview" style="background-image: url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\"); opacity:0.15; border: 1px solid rgba(255,255,255,0.06);"></div>
+      <div class="effect-specs">
+        SVG feTurbulence fractalNoise<br>
+        Opacity: 0.035 (--grain-opacity)<br>
+        Animation: grain-shift 0.5s steps(1) infinite<br>
+        Position: fixed, z-index: 9000<br>
+        pointer-events: none
+      </div>
+    </div>
+
+    <div class="effect-card">
+      <p class="effect-title">Mouse Glow</p>
+      <div class="effect-preview" style="position:relative;">
+        <div style="width:150px; height:150px; border-radius:50%; background:radial-gradient(circle, rgba(0,255,224,0.1) 0%, transparent 70%); margin:0 auto;"></div>
+      </div>
+      <div class="effect-specs">
+        600px diameter radial gradient<br>
+        rgba(0, 255, 224, 0.06) → transparent<br>
+        mix-blend-mode: screen<br>
+        Follows cursor, z-index: 1<br>
+        Transition: opacity 0.3s ease
+      </div>
+    </div>
+
+    <div class="effect-card">
+      <p class="effect-title">Reel Tile Gradient Overlay</p>
+      <div class="effect-preview" style="background: linear-gradient(135deg, rgba(0,255,224,0.08), rgba(123,97,255,0.08)); border: 1px solid rgba(255,255,255,0.06);"></div>
+      <div class="effect-specs">
+        linear-gradient 135deg<br>
+        cyan/8% → violet/8%<br>
+        Opacity: 0 → 1 on hover<br>
+        Transition: 0.6s ease
+      </div>
+    </div>
+
+    <div class="effect-card">
+      <p class="effect-title">Case Tile Gradient Overlay</p>
+      <div class="effect-preview" style="background: linear-gradient(135deg, rgba(255,45,120,0.08), rgba(123,97,255,0.08)); border: 1px solid rgba(255,255,255,0.06);"></div>
+      <div class="effect-specs">
+        linear-gradient 135deg<br>
+        magenta/8% → violet/8%<br>
+        Opacity: 0 → 1 on hover<br>
+        Transition: 0.6s ease
+      </div>
+    </div>
+
+    <div class="effect-card">
+      <p class="effect-title">Neon Glow — Cyan</p>
+      <div class="effect-preview">
+        <div style="width:80px; height:80px; border-radius:50%; border:1px solid var(--cyan); box-shadow: 0 0 60px rgba(0,255,224,0.15); display:flex; align-items:center; justify-content:center; margin:0 auto;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--cyan)"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+      </div>
+      <div class="effect-specs">
+        box-shadow: 0 0 60px rgba(0, 255, 224, 0.15)<br>
+        Used on: play button hover, text-shadow
+      </div>
+    </div>
+
+    <div class="effect-card">
+      <p class="effect-title">Backdrop Blur — Overlay</p>
+      <div class="effect-preview" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); font-size:10px; color:var(--dim); text-align:center;">
+        backdrop-filter: blur(30px)
+      </div>
+      <div class="effect-specs">
+        Video overlay background<br>
+        rgba(0, 0, 0, 0.96)<br>
+        backdrop-filter: blur(30px)<br>
+        Transition: opacity 0.5s ease
+      </div>
+    </div>
+
+    <div class="effect-card">
+      <p class="effect-title">Gradient Text</p>
+      <div class="effect-preview">
+        <span class="gradient-demo" style="font-size:36px;">LET'S TALK</span>
+      </div>
+      <div class="effect-specs">
+        linear-gradient 135deg: cyan → violet → magenta<br>
+        background-size: 200% 200%<br>
+        -webkit-background-clip: text<br>
+        Animation: gradient-shift 6s ease infinite
+      </div>
+    </div>
+
+    <div class="effect-card">
+      <p class="effect-title">Scroll Indicator Line</p>
+      <div class="effect-preview">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+          <span style="font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--dim);">Scroll</span>
+          <div style="width:1px; height:48px; background:linear-gradient(to bottom, var(--cyan), transparent);"></div>
+        </div>
+      </div>
+      <div class="effect-specs">
+        1px wide, 48px tall<br>
+        Gradient: cyan → transparent<br>
+        Animation: scroll-pulse 2s ease-in-out infinite<br>
+        (scaleY 1 → 0.5, opacity 1 → 0.3)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     06: BORDERS & DIVIDERS
+     ============================================================ -->
+<div class="sg-section">
+  <div class="sg-section-num">06</div>
+  <h2 class="sg-section-title">Borders & Dividers</h2>
+  <p class="sg-section-desc">Minimal, low-opacity white borders create structure without drawing attention. Three tiers of border strength.</p>
+
+  <div class="border-grid">
+    <div class="border-sample" style="border: 1px solid rgba(255,255,255,0.04);">
+      white/4% — Subtle<br>Tile separator, exp entries
+    </div>
+    <div class="border-sample" style="border: 1px solid rgba(255,255,255,0.06);">
+      white/6% — Medium<br>Section borders, skill strip
+    </div>
+    <div class="border-sample" style="border: 1px solid rgba(255,255,255,0.12);">
+      white/12% — Strong<br>Ghost buttons, overlay close
+    </div>
+  </div>
+  <p class="sg-note"><span class="sg-spec">Hover brightening</span> 4% → 10% on experience entries · 12% → 30% on ghost buttons</p>
+</div>
+
+<!-- ============================================================
+     07: COMPONENTS — ALL STATES
+     ============================================================ -->
+<div class="sg-section">
+  <div class="sg-section-num">07</div>
+  <h2 class="sg-section-title">Components</h2>
+  <p class="sg-section-desc">Every interactive component shown in all its states. Use these as the source of truth for building Figma components with variants.</p>
+
+  <!-- 7A: HERO NAME -->
+  <p class="sg-sub-title">Hero Name</p>
+  <p class="sg-note" style="margin-bottom:24px;">"MARIA" = stroke outline (transparent fill). On hover: fills cyan with neon glow. "KOTSAR" = solid white. On hover: magenta glitch shadow appears. Text scrambles to random chars during 360ms glitch animation.</p>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-default">Default</div>
+      <div class="comp-preview">
+        <div class="hero-demo"><span class="h-line1">Maria</span><span class="h-line2">Kotsar</span></div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-hover">Hover</div>
+      <div class="comp-preview">
+        <div class="hero-demo is-hover"><span class="h-line1">Maria</span><span class="h-line2">Kotsar</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-active">Glitch (mid-animation)</div>
+      <div class="comp-preview">
+        <div class="hero-demo is-glitch"><span class="h-line1">M@R#A</span><span class="h-line2">Kotsar</span></div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-focus">Focus Visible</div>
+      <div class="comp-preview">
+        <div class="hero-demo" style="outline:2px solid var(--cyan); outline-offset:3px; display:inline-block;"><span class="h-line1">Maria</span><span class="h-line2">Kotsar</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-divider"></div>
+
+  <!-- 7B: REEL TILE -->
+  <p class="sg-sub-title">Reel Tile (button)</p>
+  <p class="sg-note" style="margin-bottom:24px;">Full-height split tile. Background gradient fades in. Play circle scales 1.15x with cyan glow. Heading shifts +12px right. Desc brightens to white. Arrow line grows 32→64px. All transitions: 0.6s cubic-bezier(0.16, 1, 0.3, 1).</p>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-default">Default</div>
+      <div class="comp-preview no-pad">
+        <div class="tile-demo tile-reel-d">
+          <span class="t-number t-number-cyan">01</span>
+          <div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg></div>
+          <div class="t-content">
+            <p class="t-eyebrow" style="color:var(--cyan);">Video Reel</p>
+            <div class="t-heading">Watch<br>My Reel</div>
+            <p class="t-desc">A curated showcase of products and digital experiences.</p>
+            <div class="t-arrow" style="color:var(--cyan);"><span>Play</span><div class="t-line" style="background:var(--cyan);"></div><span>&rarr;</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-hover">Hover</div>
+      <div class="comp-preview no-pad">
+        <div class="tile-demo tile-reel-d is-hover">
+          <span class="t-number t-number-cyan">01</span>
+          <div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg></div>
+          <div class="t-content">
+            <p class="t-eyebrow" style="color:var(--cyan);">Video Reel</p>
+            <div class="t-heading">Watch<br>My Reel</div>
+            <p class="t-desc">A curated showcase of products and digital experiences.</p>
+            <div class="t-arrow" style="color:var(--cyan);"><span>Play</span><div class="t-line" style="background:var(--cyan);"></div><span>&rarr;</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-divider"></div>
+
+  <!-- 7C: CASE TILE -->
+  <p class="sg-sub-title">Case Study Tile (link)</p>
+  <p class="sg-note" style="margin-bottom:24px;">Same interaction pattern as reel tile with magenta accent. No play button. Links to case-study.html.</p>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-default">Default</div>
+      <div class="comp-preview no-pad">
+        <div class="tile-demo tile-case-d">
+          <span class="t-number t-number-mag">02</span>
+          <div class="t-content">
+            <p class="t-eyebrow" style="color:var(--magenta);">Case Study</p>
+            <div class="t-heading">Built<br>With AI</div>
+            <p class="t-desc">Designing with Claude Code and Figma MCP in 2026.</p>
+            <div class="t-arrow" style="color:var(--magenta);"><span>Read</span><div class="t-line" style="background:var(--magenta);"></div><span>&rarr;</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-hover">Hover</div>
+      <div class="comp-preview no-pad">
+        <div class="tile-demo tile-case-d is-hover">
+          <span class="t-number t-number-mag">02</span>
+          <div class="t-content">
+            <p class="t-eyebrow" style="color:var(--magenta);">Case Study</p>
+            <div class="t-heading">Built<br>With AI</div>
+            <p class="t-desc">Designing with Claude Code and Figma MCP in 2026.</p>
+            <div class="t-arrow" style="color:var(--magenta);"><span>Read</span><div class="t-line" style="background:var(--magenta);"></div><span>&rarr;</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-divider"></div>
+
+  <!-- 7D: BUTTONS -->
+  <p class="sg-sub-title">Buttons</p>
+  <p class="sg-note" style="margin-bottom:24px;">Two variants: Primary (cyan) and Ghost (dim). Hover fills via ::before pseudo sliding left→right. Padding: 16px 36px. Font: Space Mono 12px / 0.15em letter-spacing / uppercase.</p>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-default">Primary — Default</div>
+      <div class="comp-preview"><span class="btn-demo btn-primary-d">Send Email</span></div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-hover">Primary — Hover</div>
+      <div class="comp-preview"><span class="btn-demo btn-primary-h">Send Email</span></div>
+    </div>
+  </div>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-default">Ghost — Default</div>
+      <div class="comp-preview"><span class="btn-demo btn-ghost-d">LinkedIn</span></div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-hover">Ghost — Hover</div>
+      <div class="comp-preview"><span class="btn-demo btn-ghost-h">LinkedIn</span></div>
+    </div>
+  </div>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-focus">Primary — Focus</div>
+      <div class="comp-preview"><span class="btn-demo btn-primary-d btn-focus">Send Email</span></div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-focus">Ghost — Focus</div>
+      <div class="comp-preview"><span class="btn-demo btn-ghost-d btn-focus">LinkedIn</span></div>
+    </div>
+  </div>
+
+  <div class="sg-divider"></div>
+
+  <!-- 7E: SKILL TAGS -->
+  <p class="sg-sub-title">Skill Tags</p>
+  <p class="sg-note" style="margin-bottom:24px;">Padding: 6px 14px. Font: Space Mono 10px / 0.15em ls / uppercase. Border changes from white/8% to violet on hover.</p>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-default">Default</div>
+      <div class="comp-preview" style="display:flex; gap:8px; flex-wrap:wrap;">
+        <span class="tag-demo tag-default">Design Systems</span>
+        <span class="tag-demo tag-default">Figma</span>
+        <span class="tag-demo tag-default">Prototyping</span>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-hover">Hover (single)</div>
+      <div class="comp-preview" style="display:flex; gap:8px; flex-wrap:wrap;">
+        <span class="tag-demo tag-hover">Design Systems</span>
+        <span class="tag-demo tag-default">Figma</span>
+        <span class="tag-demo tag-default">Prototyping</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-divider"></div>
+
+  <!-- 7F: EXPERIENCE ENTRY -->
+  <p class="sg-sub-title">Experience Entry</p>
+  <p class="sg-note" style="margin-bottom:24px;">Row layout with company/role left, date right. On hover: shifts right 12px, company turns cyan, border brightens. Transition: 0.3s ease.</p>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-default">Default</div>
+      <div class="comp-preview">
+        <div class="exp-demo"><div><div class="exp-company">Manulife</div><div class="exp-role">Design Lead</div></div><div class="exp-date">2024 — Now</div></div>
+        <div class="exp-demo"><div><div class="exp-company">Trinetix</div><div class="exp-role">Senior Product Designer</div></div><div class="exp-date">2021 — 2024</div></div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-hover">Hover</div>
+      <div class="comp-preview">
+        <div class="exp-demo is-hover"><div><div class="exp-company">Manulife</div><div class="exp-role">Design Lead</div></div><div class="exp-date">2024 — Now</div></div>
+        <div class="exp-demo"><div><div class="exp-company">Trinetix</div><div class="exp-role">Senior Product Designer</div></div><div class="exp-date">2021 — 2024</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-divider"></div>
+
+  <!-- 7G: VIDEO OVERLAY -->
+  <p class="sg-sub-title">Video Overlay (Modal)</p>
+  <p class="sg-note" style="margin-bottom:24px;">Fullscreen fixed modal. Black/96% + blur(30px). Close button 48x48, ×. Focus trap on open, returns focus to trigger on close. Escape to dismiss.</p>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-active">Active State</div>
+      <div class="comp-preview no-pad">
+        <div class="overlay-mini">
+          <button class="close-x">&times;</button>
+          <div style="text-align:center; padding: 24px;">
+            <div style="width:80px; height:80px; border-radius:50%; border:1px solid rgba(0,255,224,0.2); display:flex; align-items:center; justify-content:center; margin:0 auto 20px;">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--cyan)"><polygon points="6,3 20,12 6,21"/></svg>
+            </div>
+            <div style="font-family:'Unbounded',sans-serif; font-weight:700; font-size:16px; text-transform:uppercase; margin-bottom:8px;">Reel Coming Soon</div>
+            <p style="font-size:12px; color:var(--dim); line-height:1.6;">My reel is in production.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-hover">Close Button — Hover</div>
+      <div class="comp-preview no-pad">
+        <div class="overlay-mini">
+          <button class="close-x is-hover">&times;</button>
+          <div style="text-align:center; padding: 24px;">
+            <div style="width:80px; height:80px; border-radius:50%; border:1px solid rgba(0,255,224,0.2); display:flex; align-items:center; justify-content:center; margin:0 auto 20px;">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--cyan)"><polygon points="6,3 20,12 6,21"/></svg>
+            </div>
+            <div style="font-family:'Unbounded',sans-serif; font-weight:700; font-size:16px; text-transform:uppercase; margin-bottom:8px;">Reel Coming Soon</div>
+            <p style="font-size:12px; color:var(--dim); line-height:1.6;">My reel is in production.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-divider"></div>
+
+  <!-- 7H: GRADIENT HEADING -->
+  <p class="sg-sub-title">Gradient Text Heading</p>
+  <p class="sg-note" style="margin-bottom:24px;">Animated gradient: cyan → violet → magenta. background-size: 200% 200%. Animation: gradient-shift 6s ease infinite. Three keyframe positions shown.</p>
+  <div class="comp-full">
+    <div class="comp-label comp-label-active">Animation Keyframes: 0% → 50% → 100%</div>
+    <div class="comp-preview" style="display:flex; gap:48px; align-items:center;">
+      <div style="text-align:center;">
+        <span class="gradient-demo gradient-pos-1" style="font-size:40px;">Let's<br>Talk</span>
+        <p style="font-size:9px; color:var(--dim); letter-spacing:0.2em; text-transform:uppercase; margin-top:12px;">0% — Cyan</p>
+      </div>
+      <div style="text-align:center;">
+        <span class="gradient-demo gradient-pos-2" style="font-size:40px;">Let's<br>Talk</span>
+        <p style="font-size:9px; color:var(--dim); letter-spacing:0.2em; text-transform:uppercase; margin-top:12px;">50% — Violet</p>
+      </div>
+      <div style="text-align:center;">
+        <span class="gradient-demo gradient-pos-3" style="font-size:40px;">Let's<br>Talk</span>
+        <p style="font-size:9px; color:var(--dim); letter-spacing:0.2em; text-transform:uppercase; margin-top:12px;">100% — Magenta</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-divider"></div>
+
+  <!-- 7I: FOOTER LINKS -->
+  <p class="sg-sub-title">Footer Links</p>
+  <p class="sg-note" style="margin-bottom:24px;">11px, dim gray. Min touch target: 44x44px. Hover: turns cyan. Transition: 0.3s ease.</p>
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-default">Default</div>
+      <div class="comp-preview" style="display:flex; gap:24px;">
+        <span class="footer-demo">LI</span><span class="footer-demo">DR</span><span class="footer-demo">EM</span>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-hover">Hover</div>
+      <div class="comp-preview" style="display:flex; gap:24px;">
+        <span class="footer-demo is-hover">LI</span><span class="footer-demo">DR</span><span class="footer-demo">EM</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     08: ANIMATION SPECS
+     ============================================================ -->
+<div class="sg-section">
+  <div class="sg-section-num">08</div>
+  <h2 class="sg-section-title">Animation & Motion</h2>
+  <p class="sg-section-desc">Easing curves, durations, and animation specs for all interactive elements. respects prefers-reduced-motion.</p>
+
+  <p class="sg-sub-title">Easing Curves</p>
+  <table class="anim-table">
+    <thead>
+      <tr><th>Name</th><th>Value</th><th>Usage</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Standard</td><td class="val">ease</td><td>Most transitions (opacity, color)</td></tr>
+      <tr><td>Smooth Out</td><td class="val">cubic-bezier(0.16, 1, 0.3, 1)</td><td>Tiles, buttons, arrow-line, play button</td></tr>
+      <tr><td>Steps</td><td class="val">steps(1) / steps(2)</td><td>Grain noise, glitch text</td></tr>
+    </tbody>
+  </table>
+
+  <div style="height:40px;"></div>
+
+  <p class="sg-sub-title">Duration Reference</p>
+  <table class="anim-table">
+    <thead>
+      <tr><th>Element</th><th>Duration</th><th>Easing</th><th>Property</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Hero entrance</td><td class="val">0.8s</td><td>ease</td><td>fadeSlideUp (stagger: 0s, 0.2s, 0.4s, 0.6s)</td></tr>
+      <tr><td>Scroll reveal</td><td class="val">0.8s</td><td>ease</td><td>opacity, transform translateY(30px→0)</td></tr>
+      <tr><td>Tile hover</td><td class="val">0.6s</td><td>cubic-bezier(0.16, 1, 0.3, 1)</td><td>all (gradient, scale, heading shift)</td></tr>
+      <tr><td>Button hover</td><td class="val">0.4s</td><td>cubic-bezier(0.16, 1, 0.3, 1)</td><td>::before left (-100%→0), border-color</td></tr>
+      <tr><td>Color transitions</td><td class="val">0.3s</td><td>ease</td><td>color, border-color (exp, tags, footer)</td></tr>
+      <tr><td>Glitch text</td><td class="val">0.3s</td><td>steps(2)</td><td>transform translate (magenta offset)</td></tr>
+      <tr><td>Glitch scramble</td><td class="val">360ms</td><td>60ms intervals</td><td>JS textContent (6 frames)</td></tr>
+      <tr><td>Gradient shift</td><td class="val">6s</td><td>ease infinite</td><td>background-position (200% cycle)</td></tr>
+      <tr><td>Scroll pulse</td><td class="val">2s</td><td>ease-in-out infinite</td><td>scaleY, opacity</td></tr>
+      <tr><td>Grain noise</td><td class="val">0.5s</td><td>steps(1) infinite</td><td>translate (4 random positions)</td></tr>
+      <tr><td>Overlay fade</td><td class="val">0.5s</td><td>ease</td><td>opacity (0→1)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================
+     09: ACCESSIBILITY
+     ============================================================ -->
+<div class="sg-section">
+  <div class="sg-section-num">09</div>
+  <h2 class="sg-section-title">Accessibility</h2>
+  <p class="sg-section-desc">WCAG 2.1 AA compliant. Focus visible outlines, reduced motion support, semantic landmarks, keyboard-navigable overlay with focus trap.</p>
+
+  <div class="a11y-grid">
+    <div class="a11y-card">
+      <p class="a11y-title">Color Contrast</p>
+      <div class="a11y-sample">
+        <div style="display:flex; gap:16px; align-items:center; margin-bottom:12px;">
+          <span style="padding:4px 12px; background:var(--bg); color:var(--text); font-size:14px; border:1px solid rgba(255,255,255,0.06);">Primary text</span>
+          <span class="pass-badge">AAA 15.4:1</span>
+        </div>
+        <div style="display:flex; gap:16px; align-items:center; margin-bottom:12px;">
+          <span style="padding:4px 12px; background:var(--bg); color:var(--dim); font-size:14px; border:1px solid rgba(255,255,255,0.06);">Secondary text</span>
+          <span class="pass-badge">AA 7.5:1</span>
+        </div>
+        <div style="display:flex; gap:16px; align-items:center;">
+          <span style="padding:4px 12px; background:var(--bg); color:var(--cyan); font-size:14px; border:1px solid rgba(255,255,255,0.06);">Accent cyan</span>
+          <span class="pass-badge">AAA 13.1:1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="a11y-card">
+      <p class="a11y-title">Focus Indicators</p>
+      <div class="a11y-sample">
+        <div style="display:flex; gap:20px; align-items:center;">
+          <span class="btn-demo btn-primary-d" style="outline:2px solid var(--cyan); outline-offset:3px;">Focused</span>
+          <span class="tag-demo tag-default" style="outline:2px solid var(--cyan); outline-offset:3px;">Focused</span>
+        </div>
+      </div>
+      <div class="a11y-specs">
+        outline: 2px solid var(--cyan)<br>
+        outline-offset: 3px<br>
+        Applied via :focus-visible
+      </div>
+    </div>
+
+    <div class="a11y-card">
+      <p class="a11y-title">Skip Link</p>
+      <div class="a11y-sample">
+        <span style="padding:12px 24px; background:var(--cyan); color:var(--bg); font-family:'Space Mono',monospace; font-size:14px;">Skip to content</span>
+      </div>
+      <div class="a11y-specs">
+        Hidden off-screen (top: -100%)<br>
+        Visible on focus (top: 8px)<br>
+        z-index: 9999
+      </div>
+    </div>
+
+    <div class="a11y-card">
+      <p class="a11y-title">Reduced Motion</p>
+      <div class="a11y-specs" style="font-size:12px; line-height:2;">
+        @media (prefers-reduced-motion: reduce)<br>
+        • All animation-duration → 0.01ms<br>
+        • All transition-duration → 0.01ms<br>
+        • Scroll-snap disabled<br>
+        • .sr elements forced visible<br>
+        • Hero animations removed<br>
+        • scroll-behavior: auto
+      </div>
+    </div>
+
+    <div class="a11y-card">
+      <p class="a11y-title">Touch Targets</p>
+      <div class="a11y-specs" style="font-size:12px; line-height:2;">
+        Min touch target: 44×44px<br>
+        Applied to: footer links, close button<br>
+        Interactive tiles: full-panel hit area<br>
+        Buttons: 16px vert / 36px horiz padding
+      </div>
+    </div>
+
+    <div class="a11y-card">
+      <p class="a11y-title">Semantic Structure</p>
+      <div class="a11y-specs" style="font-size:12px; line-height:2;">
+        Landmarks: &lt;main&gt;, &lt;footer&gt;, &lt;nav&gt;, &lt;section&gt;<br>
+        aria-hidden on decorative elements<br>
+        aria-label on icon-only links<br>
+        role="dialog" + aria-modal on overlay<br>
+        Focus trap with Escape key close
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     10: ICONOGRAPHY
+     ============================================================ -->
+<div class="sg-section">
+  <div class="sg-section-num">10</div>
+  <h2 class="sg-section-title">Iconography</h2>
+  <p class="sg-section-desc">Minimal SVG icons. Only two custom icons used across the site. Inline SVG for maximum control.</p>
+
+  <div class="comp-row">
+    <div class="comp-card">
+      <div class="comp-label comp-label-default">Play Triangle</div>
+      <div class="comp-preview" style="display:flex; align-items:center; gap:24px;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--cyan)"><polygon points="6,3 20,12 6,21"/></svg>
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="var(--cyan)"><polygon points="6,3 20,12 6,21"/></svg>
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="var(--cyan)"><polygon points="6,3 20,12 6,21"/></svg>
+        <span style="font-size:10px; color:var(--dim); letter-spacing:0.1em;">SVG polygon · fill: --cyan · viewBox 0 0 24 24</span>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label comp-label-default">Close × (text)</div>
+      <div class="comp-preview" style="display:flex; align-items:center; gap:24px;">
+        <span style="font-family:'Space Mono',monospace; font-size:20px;">&times;</span>
+        <span style="font-family:'Space Mono',monospace; font-size:32px;">&times;</span>
+        <span style="font-size:10px; color:var(--dim); letter-spacing:0.1em;">Unicode &times; · Space Mono · 20px</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="sg-sub-title">Arrow Pattern</p>
+  <div class="comp-full">
+    <div class="comp-label comp-label-default">Arrow Line + Text</div>
+    <div class="comp-preview" style="display:flex; align-items:center; gap:40px;">
+      <div style="display:flex; align-items:center; gap:8px; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan);">
+        <span>Play</span><div style="width:32px; height:1px; background:var(--cyan);"></div><span>&rarr;</span>
+      </div>
+      <span style="font-size:10px; color:var(--dim);">Default (32px line)</span>
+
+      <div style="display:flex; align-items:center; gap:8px; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--magenta);">
+        <span>Read</span><div style="width:64px; height:1px; background:var(--magenta);"></div><span>&rarr;</span>
+      </div>
+      <span style="font-size:10px; color:var(--dim);">Hover (64px line)</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

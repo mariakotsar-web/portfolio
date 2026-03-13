@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component States — Maria Kotsar Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #000000;
+    --text: #F0F0F0;
+    --dim: #949494;
+    --cyan: #00FFE0;
+    --magenta: #FF2D78;
+    --violet: #7B61FF;
+  }
+
+  body {
+    font-family: 'Space Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* ==========================================
+     STATES PAGE LAYOUT
+     ========================================== */
+  .states-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  .page-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--cyan), var(--violet), var(--magenta));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .page-subtitle {
+    font-size: 14px;
+    color: var(--dim);
+    margin-bottom: 80px;
+    letter-spacing: 0.1em;
+  }
+
+  .state-section {
+    margin-bottom: 100px;
+  }
+
+  .state-section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+  }
+
+  .state-section-desc {
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 40px;
+    line-height: 1.6;
+    max-width: 600px;
+  }
+
+  .state-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 24px;
+  }
+
+  .state-card {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .state-label {
+    padding: 12px 20px;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .state-label.default { color: var(--dim); }
+  .state-label.hover { color: var(--cyan); }
+  .state-label.active { color: var(--magenta); }
+  .state-label.focus { color: var(--violet); }
+
+  .state-preview {
+    padding: 40px;
+    position: relative;
+  }
+
+  .state-preview.no-pad {
+    padding: 0;
+  }
+
+  /* ==========================================
+     1. HERO NAME STATES
+     ========================================== */
+  .hero-name-demo {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 72px;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+
+  .hero-name-demo .line-1 {
+    display: block;
+    -webkit-text-stroke: 2px var(--text);
+    color: transparent;
+  }
+
+  .hero-name-demo .line-2 {
+    display: block;
+    color: var(--text);
+    position: relative;
+  }
+
+  /* Hover state: line-1 fills cyan, line-2 gets glitch shadow */
+  .hero-name-demo.is-hover .line-1 {
+    -webkit-text-stroke: 2px var(--cyan);
+    color: var(--cyan);
+    text-shadow: 0 0 60px rgba(0, 255, 224, 0.4);
+  }
+
+  .hero-name-demo.is-hover .line-2::after {
+    content: 'KOTSAR';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    color: var(--magenta);
+    opacity: 0.6;
+    z-index: -1;
+  }
+
+  /* Glitch state: scrambled text */
+  .hero-name-demo.is-glitch .line-1 {
+    -webkit-text-stroke: 2px var(--cyan);
+    color: var(--cyan);
+    text-shadow: 0 0 60px rgba(0, 255, 224, 0.4);
+  }
+
+  .hero-name-demo.is-glitch .line-2::after {
+    content: 'K0T$@R';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    color: var(--magenta);
+    opacity: 0.6;
+    z-index: -1;
+  }
+
+  /* ==========================================
+     2. WORK TILE STATES
+     ========================================== */
+  .tile-demo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px;
+    min-height: 340px;
+    overflow: hidden;
+  }
+
+  .tile-demo::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0;
+    z-index: 0;
+  }
+
+  .tile-reel-demo { background: #050505; }
+  .tile-reel-demo::before { background: linear-gradient(135deg, rgba(0, 255, 224, 0.08), rgba(123, 97, 255, 0.08)); }
+
+  .tile-case-demo { background: #030303; }
+  .tile-case-demo::before { background: linear-gradient(135deg, rgba(255, 45, 120, 0.08), rgba(123, 97, 255, 0.08)); }
+
+  .tile-demo .tile-number {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 100px;
+    font-weight: 200;
+    line-height: 0.8;
+    color: rgba(255, 255, 255, 0.02);
+    position: absolute;
+    top: 20px; right: 20px;
+    z-index: 0;
+  }
+
+  .tile-demo .tile-content { position: relative; z-index: 1; }
+
+  .tile-demo .tile-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .tile-reel-demo .tile-eyebrow { color: var(--cyan); }
+  .tile-case-demo .tile-eyebrow { color: var(--magenta); }
+
+  .tile-demo .tile-heading {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    transition: none;
+  }
+
+  .tile-demo .tile-desc {
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.7;
+    max-width: 300px;
+  }
+
+  .tile-demo .tile-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .tile-reel-demo .tile-arrow { color: var(--cyan); }
+  .tile-case-demo .tile-arrow { color: var(--magenta); }
+
+  .tile-demo .arrow-line {
+    width: 32px;
+    height: 1px;
+  }
+  .tile-reel-demo .arrow-line { background: var(--cyan); }
+  .tile-case-demo .arrow-line { background: var(--magenta); }
+
+  .tile-demo .reel-play {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px; height: 80px;
+    border: 1px solid rgba(0, 255, 224, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  .tile-demo .reel-play svg {
+    width: 18px; height: 18px;
+    fill: var(--cyan);
+    margin-left: 3px;
+  }
+
+  /* Hover states */
+  .tile-demo.is-hover::before { opacity: 1; }
+  .tile-reel-demo.is-hover .tile-number { color: rgba(0, 255, 224, 0.06); }
+  .tile-case-demo.is-hover .tile-number { color: rgba(255, 45, 120, 0.06); }
+  .tile-demo.is-hover .tile-heading { transform: translateX(12px); }
+  .tile-demo.is-hover .tile-desc { color: var(--text); }
+  .tile-demo.is-hover .arrow-line { width: 64px; }
+  .tile-reel-demo.is-hover .reel-play {
+    border-color: var(--cyan);
+    box-shadow: 0 0 60px rgba(0, 255, 224, 0.15);
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+  .tile-reel-demo.is-hover .reel-play svg { transform: scale(1.2); }
+
+  /* Focus state */
+  .tile-demo.is-focus {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
+
+  /* ==========================================
+     3. EXPERIENCE ENTRY STATES
+     ========================================== */
+  .exp-demo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .exp-demo .exp-company {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .exp-demo .exp-role {
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: 4px;
+  }
+
+  .exp-demo .exp-date {
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .exp-demo.is-hover {
+    padding-left: 12px;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+  .exp-demo.is-hover .exp-company {
+    color: var(--cyan);
+  }
+
+  /* ==========================================
+     4. SKILL TAG STATES
+     ========================================== */
+  .skill-tag-demo {
+    display: inline-block;
+    padding: 6px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--dim);
+  }
+
+  .skill-tag-demo.is-hover {
+    border-color: var(--violet);
+    color: var(--violet);
+  }
+
+  .skill-tag-demo.is-focus {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
+
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* ==========================================
+     5. CONTACT BUTTON STATES
+     ========================================== */
+  .btn-demo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 36px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary-demo {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+  .btn-primary-demo.is-hover {
+    color: var(--bg);
+    background: var(--cyan);
+  }
+  .btn-primary-demo.is-focus {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
+
+  .btn-ghost-demo {
+    border-color: rgba(255, 255, 255, 0.12);
+    color: var(--dim);
+  }
+  .btn-ghost-demo.is-hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .btn-ghost-demo.is-focus {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
+
+  .buttons-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  /* ==========================================
+     6. VIDEO OVERLAY STATES
+     ========================================== */
+  .overlay-demo {
+    background: rgba(0, 0, 0, 0.96);
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .overlay-demo .video-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 48px; height: 48px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: none;
+    color: var(--text);
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .overlay-demo .video-close.is-hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  .overlay-demo .video-placeholder {
+    text-align: center;
+    max-width: 400px;
+    padding: 0 24px;
+  }
+
+  .overlay-demo .reel-play {
+    width: 100px; height: 100px;
+    border: 1px solid rgba(0, 255, 224, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+  }
+  .overlay-demo .reel-play svg {
+    width: 20px; height: 20px;
+    fill: var(--cyan);
+    margin-left: 3px;
+  }
+
+  .overlay-demo h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .overlay-demo p {
+    color: var(--dim);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* ==========================================
+     7. FOOTER LINK STATES
+     ========================================== */
+  .footer-link-demo {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .footer-link-demo.is-hover {
+    color: var(--cyan);
+  }
+
+  .footer-row {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  /* ==========================================
+     8. CONTACT HEADING
+     ========================================== */
+  .contact-heading-demo {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: 72px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--cyan), var(--violet), var(--magenta));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+  }
+
+  .contact-heading-demo.pos-1 { background-position: 0% 50%; }
+  .contact-heading-demo.pos-2 { background-position: 50% 50%; }
+  .contact-heading-demo.pos-3 { background-position: 100% 50%; }
+
+  .gradient-row {
+    display: flex;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .gradient-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  /* Separator line */
+  .sep {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.04);
+    margin: 20px 0;
+  }
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+
+<div class="states-page">
+
+  <h1 class="page-title">Component States</h1>
+  <p class="page-subtitle">NEON VOID — Interaction & hover reference for Figma</p>
+
+  <!-- ===== 1. HERO NAME ===== -->
+  <div class="state-section">
+    <h2 class="state-section-title">01 — Hero Name</h2>
+    <p class="state-section-desc">Stroke-outlined "MARIA" fills with cyan on hover. "KOTSAR" gets a magenta glitch shadow offset. Text scrambles to random characters during the glitch animation, then resolves back.</p>
+    <div class="state-row">
+      <div class="state-card">
+        <div class="state-label default">Default</div>
+        <div class="state-preview">
+          <div class="hero-name-demo">
+            <span class="line-1">Maria</span>
+            <span class="line-2">Kotsar</span>
+          </div>
+        </div>
+      </div>
+      <div class="state-card">
+        <div class="state-label hover">Hover</div>
+        <div class="state-preview">
+          <div class="hero-name-demo is-hover">
+            <span class="line-1">Maria</span>
+            <span class="line-2">Kotsar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="state-row">
+      <div class="state-card">
+        <div class="state-label active">Glitch Animation (mid-scramble)</div>
+        <div class="state-preview">
+          <div class="hero-name-demo is-glitch">
+            <span class="line-1">M@R#A</span>
+            <span class="line-2">K0T$@R</span>
+          </div>
+        </div>
+      </div>
+      <div class="state-card">
+        <div class="state-label focus">Focus Visible</div>
+        <div class="state-preview">
+          <div class="hero-name-demo" style="outline: 2px solid var(--cyan); outline-offset: 3px; display: inline-block;">
+            <span class="line-1">Maria</span>
+            <span class="line-2">Kotsar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 2. REEL TILE ===== -->
+  <div class="state-section">
+    <h2 class="state-section-title">02 — Reel Tile</h2>
+    <p class="state-section-desc">Background gradient fades in. Play button scales up with cyan glow. Heading shifts right 12px. Description brightens from dim to white. Arrow line extends from 32px to 64px.</p>
+    <div class="state-row">
+      <div class="state-card">
+        <div class="state-label default">Default</div>
+        <div class="state-preview no-pad">
+          <div class="tile-demo tile-reel-demo">
+            <span class="tile-number">01</span>
+            <div class="reel-play">
+              <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+            </div>
+            <div class="tile-content">
+              <p class="tile-eyebrow">Video Reel</p>
+              <div class="tile-heading">Watch<br>My Reel</div>
+              <p class="tile-desc">A curated showcase of products, brands, and digital experiences.</p>
+              <div class="tile-arrow"><span>Play</span><div class="arrow-line"></div><span>&rarr;</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="state-card">
+        <div class="state-label hover">Hover</div>
+        <div class="state-preview no-pad">
+          <div class="tile-demo tile-reel-demo is-hover">
+            <span class="tile-number">01</span>
+            <div class="reel-play">
+              <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+            </div>
+            <div class="tile-content">
+              <p class="tile-eyebrow">Video Reel</p>
+              <div class="tile-heading">Watch<br>My Reel</div>
+              <p class="tile-desc">A curated showcase of products, brands, and digital experiences.</p>
+              <div class="tile-arrow"><span>Play</span><div class="arrow-line"></div><span>&rarr;</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 3. CASE TILE ===== -->
+  <div class="state-section">
+    <h2 class="state-section-title">03 — Case Study Tile</h2>
+    <p class="state-section-desc">Same interaction pattern as reel tile but with magenta accent. Background gradient uses magenta + violet blend.</p>
+    <div class="state-row">
+      <div class="state-card">
+        <div class="state-label default">Default</div>
+        <div class="state-preview no-pad">
+          <div class="tile-demo tile-case-demo">
+            <span class="tile-number">02</span>
+            <div class="tile-content">
+              <p class="tile-eyebrow">Case Study</p>
+              <div class="tile-heading">Built<br>With AI</div>
+              <p class="tile-desc">How I designed and built this portfolio using Claude Code and Figma MCP.</p>
+              <div class="tile-arrow"><span>Read</span><div class="arrow-line"></div><span>&rarr;</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="state-card">
+        <div class="state-label hover">Hover</div>
+        <div class="state-preview no-pad">
+          <div class="tile-demo tile-case-demo is-hover">
+            <span class="tile-number">02</span>
+            <div class="tile-content">
+              <p class="tile-eyebrow">Case Study</p>
+              <div class="tile-heading">Built<br>With AI</div>
+              <p class="tile-desc">How I designed and built this portfolio using Claude Code and Figma MCP.</p>
+              <div class="tile-arrow"><span>Read</span><div class="arrow-line"></div><span>&rarr;</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 4. EXPERIENCE ENTRIES ===== -->
+  <div class="state-section">
+    <h2 class="state-section-title">04 — Experience Entry</h2>
+    <p class="state-section-desc">Row shifts right 12px on hover. Company name turns cyan. Bottom border brightens. Smooth 0.3s ease transition.</p>
+    <div class="state-row">
+      <div class="state-card">
+        <div class="state-label default">Default</div>
+        <div class="state-preview">
+          <div class="exp-demo">
+            <div>
+              <div class="exp-company">Manulife</div>
+              <div class="exp-role">Design Lead</div>
+            </div>
+            <div class="exp-date">2024 — Now</div>
+          </div>
+          <div class="exp-demo">
+            <div>
+              <div class="exp-company">Trinetix</div>
+              <div class="exp-role">Senior Product Designer</div>
+            </div>
+            <div class="exp-date">2021 — 2024</div>
+          </div>
+        </div>
+      </div>
+      <div class="state-card">
+        <div class="state-label hover">Hover (first entry)</div>
+        <div class="state-preview">
+          <div class="exp-demo is-hover">
+            <div>
+              <div class="exp-company">Manulife</div>
+              <div class="exp-role">Design Lead</div>
+            </div>
+            <div class="exp-date">2024 — Now</div>
+          </div>
+          <div class="exp-demo">
+            <div>
+              <div class="exp-company">Trinetix</div>
+              <div class="exp-role">Senior Product Designer</div>
+            </div>
+            <div class="exp-date">2021 — 2024</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 5. SKILL TAGS ===== -->
+  <div class="state-section">
+    <h2 class="state-section-title">05 — Skill Tags</h2>
+    <p class="state-section-desc">Border and text color change from dim/low-opacity to violet on hover. 0.3s ease transition.</p>
+    <div class="state-row">
+      <div class="state-card">
+        <div class="state-label default">Default</div>
+        <div class="state-preview">
+          <div class="tags-row">
+            <span class="skill-tag-demo">Design Systems</span>
+            <span class="skill-tag-demo">Figma</span>
+            <span class="skill-tag-demo">Prototyping</span>
+            <span class="skill-tag-demo">User Research</span>
+          </div>
+        </div>
+      </div>
+      <div class="state-card">
+        <div class="state-label hover">Hover (one tag)</div>
+        <div class="state-preview">
+          <div class="tags-row">
+            <span class="skill-tag-demo is-hover">Design Systems</span>
+            <span class="skill-tag-demo">Figma</span>
+            <span class="skill-tag-demo">Prototyping</span>
+            <span class="skill-tag-demo">User Research</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 6. CONTACT BUTTONS ===== -->
+  <div class="state-section">
+    <h2 class="state-section-title">06 — Contact Buttons</h2>
+    <p class="state-section-desc">Primary (Send Email): cyan border, fills solid cyan on hover, text inverts to black. Ghost (LinkedIn/Dribbble): border brightens, text goes white, subtle bg fill. Slide-in ::before animation from left.</p>
+    <div class="state-row">
+      <div class="state-card">
+        <div class="state-label default">Default</div>
+        <div class="state-preview">
+          <div class="buttons-row">
+            <span class="btn-demo btn-primary-demo">Send Email</span>
+            <span class="btn-demo btn-ghost-demo">LinkedIn</span>
+            <span class="btn-demo btn-ghost-demo">Dribbble</span>
+          </div>
+        </div>
+      </div>
+      <div class="state-card">
+        <div class="state-label hover">Hover</div>
+        <div class="state-preview">
+          <div class="buttons-row">
+            <span class="btn-demo btn-primary-demo is-hover">Send Email</span>
+            <span class="btn-demo btn-ghost-demo is-hover">LinkedIn</span>
+            <span class="btn-demo btn-ghost-demo is-hover">Dribbble</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="state-row">
+      <div class="state-card">
+        <div class="state-label focus">Focus Visible</div>
+        <div class="state-preview">
+          <div class="buttons-row">
+            <span class="btn-demo btn-primary-demo is-focus">Send Email</span>
+            <span class="btn-demo btn-ghost-demo is-focus">LinkedIn</span>
+          </div>
+        </div>
+      </div>
+      <div class="state-card">
+        <div class="state-label default">&nbsp;</div>
+        <div class="state-preview" style="display: flex; align-items: center; justify-content: center; min-height: 100px;">
+          <p style="font-size: 11px; color: var(--dim); letter-spacing: 0.1em;">Button ::before slides from left&nbsp;→&nbsp;right<br>over 0.4s cubic-bezier(0.16, 1, 0.3, 1)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 7. CONTACT HEADING GRADIENT ===== -->
+  <div class="state-section">
+    <h2 class="state-section-title">07 — Contact Heading Gradient</h2>
+    <p class="state-section-desc">"LET'S TALK" uses animated gradient text (cyan → violet → magenta) that shifts position over 6s infinite loop. Three keyframe positions shown.</p>
+    <div class="state-row">
+      <div class="state-card" style="grid-column: 1 / -1;">
+        <div class="state-label active">Gradient Animation Keyframes (0% → 50% → 100%)</div>
+        <div class="state-preview">
+          <div class="gradient-row">
+            <div>
+              <div class="contact-heading-demo pos-1">Let's<br>Talk</div>
+              <p class="gradient-label">0% — Cyan dominant</p>
+            </div>
+            <div>
+              <div class="contact-heading-demo pos-2">Let's<br>Talk</div>
+              <p class="gradient-label">50% — Violet dominant</p>
+            </div>
+            <div>
+              <div class="contact-heading-demo pos-3">Let's<br>Talk</div>
+              <p class="gradient-label">100% — Magenta dominant</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 8. VIDEO OVERLAY ===== -->
+  <div class="state-section">
+    <h2 class="state-section-title">08 — Video Overlay</h2>
+    <p class="state-section-desc">Fullscreen overlay with 0.96 opacity black + 30px backdrop blur. Fades in 0.5s. Close button border turns cyan on hover. Focus trap keeps keyboard inside. Escape key closes.</p>
+    <div class="state-row">
+      <div class="state-card">
+        <div class="state-label active">Active / Open State</div>
+        <div class="state-preview no-pad">
+          <div class="overlay-demo">
+            <button class="video-close">&times;</button>
+            <div class="video-placeholder">
+              <div class="reel-play">
+                <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+              </div>
+              <h3>Reel Coming Soon</h3>
+              <p>My design reel is currently in production. Check back soon.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="state-card">
+        <div class="state-label hover">Close Button Hover</div>
+        <div class="state-preview no-pad">
+          <div class="overlay-demo">
+            <button class="video-close is-hover">&times;</button>
+            <div class="video-placeholder">
+              <div class="reel-play">
+                <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+              </div>
+              <h3>Reel Coming Soon</h3>
+              <p>My design reel is currently in production. Check back soon.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 9. FOOTER LINKS ===== -->
+  <div class="state-section">
+    <h2 class="state-section-title">09 — Footer Links</h2>
+    <p class="state-section-desc">Social links change from dim gray to cyan on hover. 0.3s ease transition. Min 44×44px touch target.</p>
+    <div class="state-row">
+      <div class="state-card">
+        <div class="state-label default">Default</div>
+        <div class="state-preview">
+          <div class="footer-row">
+            <span class="footer-link-demo">LI</span>
+            <span class="footer-link-demo">DR</span>
+            <span class="footer-link-demo">EM</span>
+          </div>
+        </div>
+      </div>
+      <div class="state-card">
+        <div class="state-label hover">Hover</div>
+        <div class="state-preview">
+          <div class="footer-row">
+            <span class="footer-link-demo is-hover">LI</span>
+            <span class="footer-link-demo">DR</span>
+            <span class="footer-link-demo">EM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
