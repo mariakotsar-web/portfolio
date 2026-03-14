@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maria Kotsar — Experiment</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #FFFFFF;
+    --bg-elevated: rgba(12, 12, 12, 0.85);
+    --text-primary: #F0F0F0;
+    --text-secondary: #A8A29E;
+    --text-tertiary: #8A8078;
+    --accent: #CBB674;
+    --accent-secondary: #9B7DB8;
+    --status-green: #4ADE80;
+    --border: rgba(245, 240, 235, 0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: #0C0C0C;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 80px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-elevated);
+  }
+
+  .nav-monogram {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .nav-monogram:hover { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-primary);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .nav-link:hover, .nav-link:focus-visible { color: var(--accent); }
+  .nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); }
+  .nav-link:focus-visible { outline: none; }
+
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-primary);
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--status-green);
+    box-shadow: 0 0 7px rgba(74, 222, 128, 0.37);
+    opacity: 0.86;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 0.86; box-shadow: 0 0 7px rgba(74, 222, 128, 0.37); }
+    50% { opacity: 0.6; box-shadow: 0 0 7px rgba(74, 222, 128, 0.13); }
+  }
+
+  /* Focus styles */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .nav-status { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-monogram" aria-label="Home">MK</a>
+  <ul class="nav-links">
+    <li><a href="#work" class="nav-link">Work</a></li>
+    <li><a href="#about" class="nav-link">About</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+  </ul>
+  <div class="nav-status" aria-label="Current availability">
+    <span class="status-dot" aria-hidden="true"></span>
+    <span id="navTime"></span>
+  </div>
+</nav>
+
+<script>
+  function updateTime() {
+    const now = new Date();
+    const options = { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit', hour12: true };
+    const timeStr = now.toLocaleTimeString('en-US', options);
+    const navTime = document.getElementById('navTime');
+    if (navTime) navTime.textContent = timeStr + ' EST';
+  }
+  updateTime();
+  setInterval(updateTime, 30000);
+</script>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</body>
+</html>
