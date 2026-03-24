@@ -9,8 +9,8 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --bg: #FFFFFF;
-    --bg-elevated: rgba(12, 12, 12, 0.85);
+    --bg: #0C0C0C;
+    --bg-elevated: #141414;
     --text-primary: #F0F0F0;
     --text-secondary: #A8A29E;
     --text-tertiary: #8A8078;
@@ -25,7 +25,7 @@
   body {
     font-family: 'Inter', -apple-system, sans-serif;
     background: var(--bg);
-    color: #0C0C0C;
+    color: var(--text-primary);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
@@ -38,11 +38,13 @@
     right: 0;
     z-index: 100;
     padding: 0 80px;
-    height: 64px;
+    height: 68px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--bg-elevated);
+    background: rgba(12, 12, 12, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .nav-monogram {
@@ -112,6 +114,92 @@
     50% { opacity: 0.6; box-shadow: 0 0 7px rgba(74, 222, 128, 0.13); }
   }
 
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 80px;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fade-up 0.6s ease 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(4.5rem, 12vw, 10rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+  }
+  .hero-name .line {
+    display: block;
+    overflow: hidden;
+  }
+  .hero-name .line:first-child {
+    font-size: 0.45em;
+    letter-spacing: 0;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  .hero-name .line-inner {
+    display: block;
+    transform: translateY(110%);
+    animation: clip-reveal 1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  }
+
+  @keyframes clip-reveal {
+    to { transform: translateY(0); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    font-weight: 300;
+    color: var(--text-secondary);
+    margin-top: 32px;
+    max-width: 600px;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fade-up 0.6s ease 0.7s forwards;
+  }
+  .hero-subtitle em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-draw-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    margin-top: 40px;
+    opacity: 0;
+    animation: fade-up 0.6s ease 1.2s forwards;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .hero-draw-hint:hover { color: var(--text-secondary); }
+
   /* Focus styles */
   a:focus-visible, button:focus-visible {
     outline: 2px solid var(--accent);
@@ -132,6 +220,7 @@
     .nav { padding: 0 20px; }
     .nav-links { display: none; }
     .nav-status { display: none; }
+    .hero { padding: 0 20px; }
   }
 </style>
 </head>
@@ -149,6 +238,16 @@
     <span id="navTime"></span>
   </div>
 </nav>
+
+<section class="hero" id="hero">
+  <p class="hero-eyebrow">Product Designer</p>
+  <h1 class="hero-name">
+    <span class="line"><span class="line-inner">Hello, I'm</span></span>
+    <span class="line"><span class="line-inner">Maria</span></span>
+  </h1>
+  <p class="hero-subtitle">Design Lead at <em>Manulife Financial</em> — I thrive in the messy early stages: ideation, concepting, and design exploration. I lead teams delivering secure, scalable enterprise experiences across insurance &amp; wealth. Based in Toronto.</p>
+  <button class="hero-draw-hint" aria-label="Activate drawing mode">[ double-click to sketch ]</button>
+</section>
 
 <script>
   function updateTime() {
