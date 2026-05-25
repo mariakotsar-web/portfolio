@@ -1,3 +1,9 @@
 .DS_Store
 .agents/
 .claude/
+
+# Local design sandboxes + handoff bundles — not for prod
+home-preview.html
+variations.html
+2026/
+design-handoff/

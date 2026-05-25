@@ -14,7 +14,7 @@
      ============================================================ */
 
   :root {
-    --paper:  #F4F2EC;     /* cream page bg */
+    --paper:  #F0F0F0;     /* neutral page bg (no warm undertone) */
     --cream:  #ECE9E0;     /* raised surface */
     --sand:   #D7D3C5;     /* hairline / border */
     --mute:   #8A8674;     /* muted text */
@@ -390,6 +390,7 @@
     white-space: nowrap;
     text-align: left;
   }
+  .hero-name .hn-word { display: inline-block; }
   .hero-name .first {
     font-family: var(--f-serif);
     font-style: italic;
@@ -494,14 +495,18 @@
   .timeline-company {
     font-size: clamp(22px, 2.2vw, 30px); font-weight: 600;
     color: var(--paper); letter-spacing: -0.015em;
-    text-decoration: underline;
-    text-decoration-color: rgba(255, 255, 255, 0.35);
-    text-underline-offset: 6px; text-decoration-thickness: 1px;
-    transition: text-decoration-color 240ms ease;
+    text-decoration: none;
+    transition: opacity 240ms ease;
   }
   a.timeline-company { color: var(--paper); }
-  a.timeline-company:hover,
-  .timeline-row:hover .timeline-company { text-decoration-color: var(--paper); }
+  .timeline-company svg {
+    width: 20px; height: 20px; stroke-width: 1.75; margin-left: 6px;
+    display: inline-block; vertical-align: middle;
+    transform: rotate(45deg);
+    transition: transform 240ms var(--ease);
+  }
+  .timeline-company:hover { opacity: 0.85; }
+  .timeline-company:hover svg { transform: translate(3px, -3px) rotate(45deg); }
 
   /* ===== Projects ===== */
   .projects {
@@ -605,6 +610,50 @@
     .project-meta { padding: 8px 8px 4px; gap: 12px; }
     .project-name { font-size: clamp(24px, 6vw, 36px); }
     .project-desc { font-size: 15px; }
+  }
+
+  /* ===== Projects (LNNK-style visual index) ===== */
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-sans); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); margin: 0 0 24px; }
+  .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); }
+  .pe { background: var(--paper); padding: 120px 0; }
+  .pe-inner { max-width: 1100px; margin: 0 auto; }
+  .pe-inner > .eyebrow { margin-bottom: 44px; }
+  .pe-grid { display: grid; grid-template-columns: 1fr max-content; gap: 48px; align-items: center; }
+  .pe-preview { position: relative; aspect-ratio: 5 / 4; }
+  .pe-visual { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--sand); opacity: 0; transform: scale(0.98); transition: opacity .5s var(--ease), transform .5s var(--ease); }
+  .pe-visual.active { opacity: 1; transform: scale(1); }
+  .pe-visual .bar { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 12px; border-bottom: 1px solid var(--sand); background: rgba(255,255,255,0.75); position: relative; z-index: 2; }
+  .pe-visual .bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--sand); display: inline-block; }
+  .pe-visual .scene { position: absolute; inset: 30px 0 0 0; overflow: hidden; }
+  .pe-visual .scene::after { content: ""; position: absolute; top: 0; left: -45%; width: 45%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,0.5), transparent); animation: peShimmer 3.4s ease-in-out infinite; z-index: 3; }
+  @keyframes peShimmer { 0% { left: -45%; } 55%, 100% { left: 120%; } }
+  .pe-cap { position: absolute; left: 14px; bottom: 12px; z-index: 4; font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink2); background: rgba(255,255,255,0.8); padding: 3px 9px; border-radius: 999px; }
+  .scene.s1 { background: radial-gradient(circle at 28% 24%, rgba(201,179,255,0.45), transparent 58%), linear-gradient(160deg, #F7F7F7, #F0F0F0); }
+  .scene.s2 { background: radial-gradient(circle at 72% 28%, rgba(123,140,255,0.28), transparent 58%), linear-gradient(160deg, #F0F0F0, #F7F7F7); }
+  .scene.s3 { background: radial-gradient(circle at 50% 80%, rgba(154,166,255,0.35), transparent 60%), linear-gradient(160deg, #F7F7F7, #F0F0F0); }
+  .m-portal { position: absolute; inset: 18px; }
+  .m-portal .side { position: absolute; left: 0; top: 0; width: 64px; height: 100%; border-radius: 8px; background: rgba(26,24,18,0.06); }
+  .m-portal .r { position: absolute; left: 80px; height: 12px; border-radius: 6px; background: rgba(26,24,18,0.1); }
+  .m-portal .r1 { top: 6px; width: 52%; } .m-portal .r2 { top: 30px; width: 38%; } .m-portal .r3 { top: 54px; width: 46%; }
+  .m-portal .send { position: absolute; right: 0; bottom: 0; width: 120px; height: 34px; border-radius: 10px; background: rgba(123,140,255,0.25); border: 1px solid rgba(123,140,255,0.45); }
+  .m-app { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .m-app .phone { width: 124px; height: 82%; border-radius: 18px; background: #fff; border: 1px solid var(--sand); box-shadow: 0 14px 32px rgba(0,0,0,0.08); padding: 14px 10px; display: flex; flex-direction: column; gap: 8px; }
+  .m-app .num { height: 28px; border-radius: 6px; background: rgba(123,140,255,0.3); }
+  .m-app .c { height: 30px; border-radius: 8px; background: rgba(26,24,18,0.06); }
+  .m-sys { position: absolute; inset: 20px; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: 10px; }
+  .m-sys span { border-radius: 8px; }
+  .m-sys span:nth-child(1) { background: #7B8CFF; } .m-sys span:nth-child(2) { background: #C9B3FF; } .m-sys span:nth-child(3) { background: #1A1812; }
+  .m-sys span:nth-child(4) { background: #9AA6FF; } .m-sys span:nth-child(5) { background: #F0F0F0; border: 1px solid var(--sand); } .m-sys span:nth-child(6) { background: #E8FF3D; }
+  .pe-list ul { list-style: none; margin: 0; padding: 0; }
+  .pe-list li { padding: 14px 0; font-size: clamp(28px, 3.4vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; color: var(--ink); cursor: pointer; white-space: nowrap; transition: color .3s var(--ease); }
+  /* hover the list: others fade to the "— and when it doesn't" grey, hovered one goes periwinkle */
+  .pe-list:hover li { color: #BBBBBB; }
+  .pe-list li:hover { color: var(--accent); }
+  @media (max-width: 980px) {
+    .pe { padding: 80px 0; }
+    .pe-grid { grid-template-columns: 1fr; gap: 28px; }
+    .pe-preview { aspect-ratio: 16/10; }
+    .pe-list li { white-space: normal; }
   }
 
   /* ===== Work ===== */
@@ -926,7 +975,7 @@
   .hiw-inner { max-width: 1100px; margin: 0 auto; }
   .hiw-tag { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); margin: 0 0 24px; }
   .hiw-tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); }
-  .hiw-lede { margin: 0 0 48px; max-width: 50ch; font-size: 18px; color: var(--ink2); line-height: 1.5; }
+  .hiw-lede { margin: 0 0 48px; font-size: 18px; color: var(--ink2); line-height: 1.5; }
   .hiw-lede em { font-style: italic; color: var(--ink); }
   .hiw-statements { display: flex; flex-direction: column; gap: 14px; }
   .hiw-text { margin: 0; font-size: clamp(28px, 3.4vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; color: var(--ink); white-space: nowrap; overflow: hidden; padding-bottom: 8px; }
@@ -1087,6 +1136,10 @@
     [data-reveal].in { opacity: 1; --rx: 0px; --ry: 0px; }
     .hero [data-reveal] { transition-duration: 1200ms; }
     .hero [data-reveal="up"] { --ry: 40px; }
+    /* Hero name: each word rises + fades in separately (Webflow-style stagger) */
+    .hero-name[data-reveal] { opacity: 1; transform: none; }
+    .hero-name[data-reveal] .hn-word { opacity: 0; transform: translateY(0.4em); transition: opacity .7s ease, transform .9s cubic-bezier(.16,.84,.3,1); transition-delay: var(--wd, 0ms); will-change: opacity, transform; }
+    .hero-name[data-reveal].in .hn-word { opacity: 1; transform: translateY(0); }
     /* After the entrance finishes, make transform snappy so scroll parallax (--py) tracks smoothly */
     [data-reveal].revealed {
       transition: opacity 1100ms cubic-bezier(.16,.84,.3,1), transform 520ms cubic-bezier(.16,.84,.3,1);
@@ -1125,7 +1178,7 @@
 
     .hero { padding: 96px 0 56px; min-height: auto; }
     .hero::after, .hero::before, .hero-rule, .hero-vline { display: none; }
-    .hero-name { font-size: clamp(56px, 14vw, 140px); padding-top: 8px; white-space: normal; }
+    .hero-name { font-size: clamp(56px, 14vw, 140px); padding-top: 8px; white-space: normal; line-height: 0.95; }
 
     .hero-body {
       grid-template-columns: 1fr;
@@ -1137,7 +1190,7 @@
 
     .intro { padding: 96px 32px; }
     .hiw { padding: 72px 32px 110px; }
-    .hiw-text { white-space: normal; }
+    .hiw-text { white-space: normal; line-height: 1.25; }
     .intro-values-list { grid-template-columns: 1fr; gap: 12px; }
     .timeline-row { grid-template-columns: 140px 1fr; gap: 16px; }
 
@@ -1216,8 +1269,11 @@
       <span class="hero-blob-bg b3"></span>
     </div>
 
-    <h1 class="hero-name" data-reveal data-parallax="0.03" style="--reveal-delay: 700ms;">
-      Hi, I am <span class="first">Maria</span>
+    <h1 class="hero-name" data-reveal style="--reveal-delay: 0ms;">
+      <span class="hn-word" style="--wd:150ms">Hi,</span>
+      <span class="hn-word" style="--wd:300ms">I</span>
+      <span class="hn-word" style="--wd:430ms">am</span>
+      <span class="hn-word first" style="--wd:580ms">Maria</span>
     </h1>
 
     <div class="hero-body">
@@ -1241,21 +1297,21 @@
       <div>
         <div class="intro-tag">About me</div>
         <p class="intro-body" data-reveal="up">
-          Partnering with large organizations across the globe — from <em>Big4</em> to <em>FMCG</em> brands — to design holistic, scalable B2B and SaaS solutions. Big-picture and systems thinker, energized by complexity and challenges.
+          Partnering with large organizations across the globe — from <em>Big4</em> to <em>FMCG</em> brands — to design holistic, scalable B2B and SaaS solutions.
         </p>
 
         <div class="intro-timeline">
           <div class="timeline-row">
             <span class="timeline-year">2024 — Now</span>
-            <a class="timeline-company" href="https://www.manulife.ca" target="_blank" rel="noopener">Manulife Financial Corporation</a>
+            <a class="timeline-company" href="https://www.manulife.ca" target="_blank" rel="noopener">Manulife Financial Corporation<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
           </div>
           <div class="timeline-row">
             <span class="timeline-year">2021 — 2024</span>
-            <a class="timeline-company" href="https://www.trinetix.com/" target="_blank" rel="noopener">Trinetix</a>
+            <a class="timeline-company" href="https://www.trinetix.com/" target="_blank" rel="noopener">Trinetix<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
           </div>
           <div class="timeline-row">
             <span class="timeline-year">2019 — 2021</span>
-            <a class="timeline-company" href="https://www.dataart.com/" target="_blank" rel="noopener">DataArt</a>
+            <a class="timeline-company" href="https://www.dataart.com/" target="_blank" rel="noopener">DataArt<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
           </div>
         </div>
       </div>
@@ -1263,31 +1319,36 @@
   </section>
 
   <!-- ===== Projects ===== -->
-  <section class="projects" id="projects" data-stagger>
-    <div class="projects-head">
-      <h2 class="projects-title" data-reveal="up" data-parallax="0.05">Selected <em>projects</em></h2>
+  <section class="pe" id="projects">
+    <div class="pe-inner">
+      <p class="eyebrow" data-reveal>Projects</p>
+      <div class="pe-grid">
+        <div class="pe-preview" data-reveal="left">
+          <div class="pe-visual active" data-i="0">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <div class="scene s1"><div class="m-portal"><span class="side"></span><span class="r r1"></span><span class="r r2"></span><span class="r r3"></span><span class="send"></span></div></div>
+            <span class="pe-cap">Generative AI Portal</span>
+          </div>
+          <div class="pe-visual" data-i="1">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <div class="scene s2"><div class="m-app"><span class="phone"><b class="num"></b><span class="c"></span><span class="c"></span></span></div></div>
+            <span class="pe-cap">Subscription Tracking</span>
+          </div>
+          <div class="pe-visual" data-i="2">
+            <div class="bar"><i></i><i></i><i></i></div>
+            <div class="scene s3"><div class="m-sys"><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+            <span class="pe-cap">Design System</span>
+          </div>
+        </div>
+        <div class="pe-list">
+          <ul>
+            <li class="active" data-i="0">Generative AI Portal</li>
+            <li data-i="1">Subscription Tracking</li>
+            <li data-i="2">Design System</li>
+          </ul>
+        </div>
+      </div>
     </div>
-
-    <a class="project-card" href="#case-gen-ai" data-reveal="up" data-parallax="0.04">
-      <div class="project-cover">
-        <!-- TODO: replace with cover image when provided -->
-        <div class="project-cover-placeholder" aria-hidden="true">
-          <span class="ph-label">Coming soon</span>
-        </div>
-      </div>
-      <div class="project-meta">
-        <div class="project-meta-row">
-          <span class="project-kicker">Big4 client</span>
-          <span class="project-year">2023 — 2024</span>
-        </div>
-        <h3 class="project-name">Generative AI Portal</h3>
-        <p class="project-desc">Innovative platform to explore, interact, and create AI-generated content for professionals.</p>
-        <div class="project-tags">
-          <span class="project-tag">Design system</span>
-          <span class="project-tag">E2E product design</span>
-        </div>
-      </div>
-    </a>
   </section>
 
   <!-- ===== How I work (manifesto) ===== -->
@@ -1642,6 +1703,23 @@
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  // Projects index — hover a name to swap the left preview
+  (function () {
+    var list = document.querySelector('.pe-list');
+    var preview = document.querySelector('.pe-preview');
+    if (!list || !preview) return;
+    var items = list.querySelectorAll('li');
+    var visuals = preview.querySelectorAll('.pe-visual');
+    function activate(i) {
+      items.forEach(function (li, n) { li.classList.toggle('active', n === i); });
+      visuals.forEach(function (v, n) { v.classList.toggle('active', n === i); });
+    }
+    items.forEach(function (li, i) {
+      li.addEventListener('mouseenter', function () { activate(i); });
+      li.addEventListener('click', function () { activate(i); });
+    });
   })();
 </script>
 
