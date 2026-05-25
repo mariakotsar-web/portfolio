@@ -6,7 +6,7 @@
 <title>Maria Kotsar — Product Design Lead</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   /* ============================================================
      Maria Kotsar — Portfolio
@@ -38,7 +38,7 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; overflow-x: hidden; }
   html { scroll-behavior: smooth; }
   body {
     background: var(--paper);
@@ -61,7 +61,7 @@
     display: flex; align-items: center; justify-content: center;
     flex-direction: column; gap: 20px;
     background: var(--paper);
-    transition: opacity 700ms ease, visibility 700ms ease;
+    transition: opacity 500ms ease, visibility 500ms ease;
   }
   .splash.is-hidden { opacity: 0; visibility: hidden; }
   .splash-mark {
@@ -160,15 +160,13 @@
     font-size: 11px; font-weight: 700;
   }
 
-  /* Light blurred panel appears once the user scrolls */
+  /* Nav stays transparent on scroll (no background panel) */
   .nav.scrolled {
-    background: rgba(237, 239, 233, 0.06);
-    backdrop-filter: saturate(220%) blur(28px) brightness(1.1);
-    -webkit-backdrop-filter: saturate(220%) blur(28px) brightness(1.1);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.18),
-      0 8px 22px rgba(0, 0, 0, 0.10);
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom-color: transparent;
+    box-shadow: none;
   }
   /* When nav sits over the periwinkle About block, flip text/glyph to cream */
   .nav.on-light .nav-mark,
@@ -181,8 +179,8 @@
     border-color: rgba(14, 15, 14, 0.12);
   }
   .nav.on-light.scrolled {
-    background: rgba(14, 15, 14, 0.06);
-    border-bottom-color: rgba(14, 15, 14, 0.12);
+    background: transparent;
+    border-bottom-color: transparent;
   }
 
   /* ===== Buttons ===== */
@@ -255,7 +253,7 @@
   .hero-blob-bg {
     position: absolute;
     border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
-    filter: blur(72px);
+    filter: blur(66px);
     mix-blend-mode: normal;
     will-change: transform, translate, border-radius, opacity;
     transition: translate 900ms cubic-bezier(.2, .8, .2, 1);
@@ -265,26 +263,35 @@
   }
   /* Each blob runs drift + morph + breathe in parallel; prime-ish durations so they never resync */
   .hero-blob-bg.b1 {
-    width: 820px; height: 820px;
-    background: radial-gradient(circle at 30% 30%, var(--accent), transparent 70%);
-    top: -16%; left: 4%;
-    --breathe-hi: 0.55; --breathe-lo: 0.32;
+    width: 860px; height: 860px;
+    background: radial-gradient(circle at 32% 32%, #7B8CFF 0%, #9A9DFF 35%, #C9B3FF 60%, transparent 75%);
+    top: -18%; left: 2%;
+    --breathe-hi: 0.55; --breathe-lo: 0.34;
     animation:
-      blobDrift1 26s cubic-bezier(.45,.05,.55,.95) infinite,
-      blobMorph1 18s ease-in-out infinite,
-      blobBreathe 9s  ease-in-out infinite;
+      blobDrift1 18s cubic-bezier(.45,.05,.55,.95) infinite,
+      blobMorph1 12s ease-in-out infinite,
+      blobBreathe 6s  ease-in-out infinite;
   }
   .hero-blob-bg.b2 {
-    width: 700px; height: 700px;
-    background: radial-gradient(circle at 60% 50%, var(--accent-2), transparent 70%);
-    bottom: -14%; right: 2%;
-    --breathe-hi: 0.5; --breathe-lo: 0.28;
+    width: 740px; height: 740px;
+    background: radial-gradient(circle at 62% 46%, #C9B3FF 0%, #ADA6FF 38%, #7B8CFF 63%, transparent 76%);
+    bottom: -16%; right: 0%;
+    --breathe-hi: 0.48; --breathe-lo: 0.3;
     animation:
-      blobDrift2 32s cubic-bezier(.45,.05,.55,.95) infinite,
-      blobMorph2 22s ease-in-out infinite,
-      blobBreathe 11s ease-in-out infinite -3s;
+      blobDrift2 22s cubic-bezier(.45,.05,.55,.95) infinite,
+      blobMorph2 15s ease-in-out infinite,
+      blobBreathe 8s ease-in-out infinite -3s;
   }
-  .hero-blob-bg.b3 { display: none; }
+  .hero-blob-bg.b3 {
+    width: 540px; height: 540px;
+    background: radial-gradient(circle at 48% 42%, #A6AFFF 0%, #C9B3FF 50%, transparent 73%);
+    top: 16%; left: 40%;
+    --breathe-hi: 0.4; --breathe-lo: 0.24;
+    animation:
+      blobDrift2 24s cubic-bezier(.45,.05,.55,.95) infinite -10s,
+      blobMorph1 15s ease-in-out infinite,
+      blobBreathe 7s ease-in-out infinite -2s;
+  }
   @keyframes blobDrift1 {
     0%   { transform: translate3d(0, 0, 0) scale(1)        rotate(0deg); }
     20%  { transform: translate3d(180px, 40px, 0) scale(1.08) rotate(40deg); }
@@ -319,15 +326,53 @@
     .hero-blob-bg { animation: none !important; }
   }
 
-  /* Vertical guide lines at 33% / 66% */
+  /* Guide lines: verticals at 12% / 50% / 88% + horizontals at 48% / 92% */
+  /* Vertical rails — inset to content column — at 13% / 50% / 87% */
   .hero::after {
     content: "";
     position: absolute; inset: 0;
     z-index: -1;
-    background-image: linear-gradient(to right, var(--sand) 1px, transparent 1px);
-    background-size: 33.333% 100%;
-    background-repeat: repeat-x;
-    opacity: 0.55;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right,
+        transparent calc(13% - 0.5px), rgba(255,255,255,0.5) calc(13% - 0.5px), rgba(255,255,255,0.5) calc(13% + 0.5px), transparent calc(13% + 0.5px),
+        transparent calc(50% - 0.5px), rgba(255,255,255,0.5) calc(50% - 0.5px), rgba(255,255,255,0.5) calc(50% + 0.5px), transparent calc(50% + 0.5px),
+        transparent calc(87% - 0.5px), rgba(255,255,255,0.5) calc(87% - 0.5px), rgba(255,255,255,0.5) calc(87% + 0.5px), transparent calc(87% + 0.5px)
+      );
+  }
+  /* Upper horizontal line — full-bleed (edge to edge) at 44.5% */
+  .hero::before {
+    content: "";
+    position: absolute;
+    left: 50%; transform: translateX(-50%);
+    width: 100vw; top: 0; bottom: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to bottom,
+        transparent calc(44.5% - 0.5px), rgba(255,255,255,0.5) calc(44.5% - 0.5px), rgba(255,255,255,0.5) calc(44.5% + 0.5px), transparent calc(44.5% + 0.5px)
+      );
+  }
+  /* Bottom guide line anchored to the right blurb's baseline (Y set by JS) */
+  /* Bottom horizontal line — full-bleed, anchored to the right blurb's baseline (Y set by JS) */
+  .hero-rule {
+    position: absolute;
+    left: 50%; transform: translateX(-50%);
+    width: 100vw;
+    top: var(--rule-y, calc(100% - 80px));
+    height: 1px;
+    background: rgba(255,255,255,0.5);
+    z-index: -1;
+    pointer-events: none;
+  }
+  /* Center vertical line — crisp dedicated element so it doesn't sub-pixel-vanish */
+  .hero-vline {
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(255,255,255,0.5);
+    z-index: -1;
     pointer-events: none;
   }
 
@@ -341,7 +386,7 @@
     line-height: 0.86;
     letter-spacing: -0.05em;
     color: var(--ink);
-    padding: 24px 0 0;
+    padding: 4px 0 0;
     white-space: nowrap;
     text-align: left;
   }
@@ -349,20 +394,22 @@
     font-family: var(--f-serif);
     font-style: italic;
     font-weight: 500;
+    letter-spacing: 0.01em;
     font-variation-settings: "opsz" 144, "SOFT" 100;
   }
 
-  /* Three-column body: blurb · centerpiece · blurb */
+  /* Editorial body grid: rails 12% · 38% · 38% · 12% — left blurb in col 2, right in col 3 */
   .hero-body {
     position: relative; z-index: 2;
     flex: 1;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 32px;
-    padding: 56px 0 24px;
+    grid-template-columns: 13% 37% 37% 13%;
+    gap: 0;
+    padding: 56px 0 0;
     align-items: end;
   }
   .hero-blurb {
+    margin: 0;
     font-size: 16px;
     line-height: 1.5;
     color: var(--ink);
@@ -370,8 +417,8 @@
     text-wrap: pretty;
   }
   .hero-blurb em { font-style: italic; color: var(--ink2); font-weight: 400; }
-  .hero-blurb.left  { justify-self: start; align-self: center; }
-  .hero-blurb.right { justify-self: end;   text-align: left; align-self: center; }
+  .hero-blurb.left  { grid-column: 2; justify-self: start; align-self: end; text-align: left; margin-bottom: 110px; }
+  .hero-blurb.right { grid-column: 3; justify-self: end; align-self: end; text-align: right; }
 
   /* ===== Intro (periwinkle contrast) ===== */
   .intro {
@@ -459,7 +506,6 @@
   /* ===== Projects ===== */
   .projects {
     padding: 120px 0 96px;
-    border-bottom: 1px solid var(--sand);
   }
   .projects-head {
     display: flex; align-items: end; justify-content: space-between;
@@ -474,9 +520,9 @@
     color: var(--ink); text-wrap: balance;
   }
   .projects-title em {
-    font-family: var(--f-serif); font-style: italic; font-weight: 500;
+    font-family: inherit; font-style: italic; font-weight: inherit;
     color: var(--ink);
-    border-bottom: 4px solid var(--accent); padding-bottom: 2px;
+    border-bottom: 3px solid var(--accent); padding-bottom: 2px;
   }
 
   .project-card {
@@ -875,17 +921,41 @@
     display: inline-flex; align-items: center; justify-content: center; font-size: 12px;
   }
 
+  /* ===== How I work (manifesto · white full-bleed band) ===== */
+  .hiw { background: #FFFFFF; width: 100vw; margin-left: calc(50% - 50vw); padding: 110px 56px 156px; }
+  .hiw-inner { max-width: 1100px; margin: 0 auto; }
+  .hiw-tag { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); margin: 0 0 24px; }
+  .hiw-tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); }
+  .hiw-lede { margin: 0 0 48px; max-width: 50ch; font-size: 18px; color: var(--ink2); line-height: 1.5; }
+  .hiw-lede em { font-style: italic; color: var(--ink); }
+  .hiw-statements { display: flex; flex-direction: column; gap: 14px; }
+  .hiw-text { margin: 0; font-size: clamp(28px, 3.4vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; color: var(--ink); white-space: nowrap; overflow: hidden; padding-bottom: 8px; }
+  .hiw-text .line { display: inline-block; }
+  .hiw-text .dim { color: #BBBBBB; }
+  .hiw-text .hl {
+    color: var(--ink);
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-repeat: no-repeat; background-position: left bottom;
+    background-size: 100% 3px; padding-bottom: 4px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hiw-text[data-reveal] { opacity: 1; transform: none; }
+    .hiw-text[data-reveal] .line { transform: translateY(120%); transition: transform 1s cubic-bezier(.2,.8,.2,1); transition-delay: var(--d, 0ms); will-change: transform; }
+    .hiw-text[data-reveal].in .line { transform: translateY(0); }
+    .hiw-text[data-reveal] .hl { background-size: 0% 3px; transition: background-size .8s cubic-bezier(.2,.8,.2,1); transition-delay: var(--hld, 1100ms); }
+    .hiw-text[data-reveal].in .hl { background-size: 100% 3px; }
+  }
+
   /* ===== Footer ===== */
   .footer {
     background: var(--paper);
     color: var(--ink);
     width: 100vw;
     margin-left: calc(50% - 50vw);
-    border-top: 1px solid var(--sand);
     overflow: hidden;
   }
   .footer-marquee {
-    border-bottom: 1px solid var(--sand);
+    background: var(--accent);
     padding: 56px 0;
     overflow: hidden;
   }
@@ -893,13 +963,13 @@
     display: flex; gap: 48px; align-items: center;
     font-size: clamp(48px, 7vw, 96px);
     font-weight: 700; letter-spacing: -0.03em;
-    color: var(--ink);
+    color: var(--paper);
     white-space: nowrap;
     animation: footScroll 28s linear infinite;
     font-family: var(--f-display);
   }
   .footer-marquee .track > span { display: inline-flex; align-items: center; gap: 48px; }
-  .footer-marquee .track .sep { color: var(--accent); font-size: 0.7em; }
+  .footer-marquee .track .sep { color: var(--paper); font-size: 0.7em; }
   @keyframes footScroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
@@ -910,9 +980,7 @@
     grid-template-columns: 1fr auto;
     align-items: center;
     gap: 32px;
-    padding: 56px clamp(56px, 8vw, 160px) 40px;
-    max-width: 1920px;
-    margin: 0 auto;
+    padding: 56px max(56px, calc((100% - 1100px) / 2)) 40px;
   }
 
   /* Liquid-glass social pills */
@@ -947,22 +1015,28 @@
     display: inline-flex; align-items: center; justify-content: center;
     width: 40px; height: 40px;
     border-radius: 50%;
-    background: var(--ink);
-    color: var(--paper);
+    border: 1px solid var(--sand);
+    background: transparent;
+    color: var(--ink);
     font-size: 16px; font-weight: 600;
-    transition: transform var(--d-2) var(--ease), background var(--d-1) var(--ease), color var(--d-1) var(--ease);
+    transition: transform var(--d-2) var(--ease), background var(--d-1) var(--ease), color var(--d-1) var(--ease), border-color var(--d-1) var(--ease);
   }
+  /* One identical SVG arrow everywhere — rotated per pointing direction */
+  .footer-socials a .arr svg { width: 16px; height: 16px; display: block; transform: rotate(45deg); }
+  .back-top svg { width: 20px; height: 20px; display: block; }
   .footer-socials a:hover {
+    transform: translateY(-2px);
     background: color-mix(in oklab, var(--accent) 18%, transparent);
     border-color: color-mix(in oklab, var(--accent) 60%, transparent);
     color: var(--accent);
     box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.16),
+      inset 0 1px 0 rgba(255,255,255,0.25),
       0 8px 22px color-mix(in oklab, var(--accent) 16%, transparent);
   }
   .footer-socials a:hover .arr {
     transform: translate(3px, -3px);
     background: var(--accent);
+    border-color: var(--accent);
     color: var(--paper);
   }
 
@@ -990,9 +1064,7 @@
 
   .footer-bottom {
     border-top: 1px solid var(--sand);
-    padding: 24px clamp(56px, 8vw, 160px) 80px;
-    max-width: 1920px;
-    margin: 0 auto;
+    padding: 24px max(56px, calc((100% - 1100px) / 2)) 80px;
     display: flex; justify-content: space-between;
     font-size: 12px; color: var(--mute);
     letter-spacing: 0.04em;
@@ -1002,22 +1074,38 @@
   @media (prefers-reduced-motion: no-preference) {
     [data-reveal] {
       opacity: 0;
-      transform: translateY(48px);
+      transform: translate3d(var(--rx, 0px), calc(var(--ry, 48px) + var(--py, 0px)), 0);
       transition:
         opacity 1100ms cubic-bezier(.16,.84,.3,1),
         transform 1100ms cubic-bezier(.16,.84,.3,1);
       transition-delay: var(--reveal-delay, 0ms);
       will-change: opacity, transform;
     }
-    [data-reveal="left"]  { transform: translateX(-64px); }
-    [data-reveal="right"] { transform: translateX(64px); }
-    [data-reveal="up"]    { transform: translateY(80px); }
-    [data-reveal].in {
-      opacity: 1;
-      transform: translate(0, 0);
-    }
+    [data-reveal="left"]  { --rx: -64px; --ry: 0px; }
+    [data-reveal="right"] { --rx: 64px;  --ry: 0px; }
+    [data-reveal="up"]    { --ry: 80px; }
+    [data-reveal].in { opacity: 1; --rx: 0px; --ry: 0px; }
     .hero [data-reveal] { transition-duration: 1200ms; }
-    .hero [data-reveal="up"] { transform: translateY(40px); }
+    .hero [data-reveal="up"] { --ry: 40px; }
+    /* After the entrance finishes, make transform snappy so scroll parallax (--py) tracks smoothly */
+    [data-reveal].revealed {
+      transition: opacity 1100ms cubic-bezier(.16,.84,.3,1), transform 520ms cubic-bezier(.16,.84,.3,1);
+      transition-delay: 0ms;
+    }
+    /* Project card reveals/parallaxes while keeping its hover (border/shadow/bg) transitions */
+    .project-card[data-reveal] {
+      transition:
+        opacity 1100ms cubic-bezier(.16,.84,.3,1),
+        transform 1100ms cubic-bezier(.16,.84,.3,1),
+        border-color var(--d-2) ease, box-shadow var(--d-2) ease, background var(--d-2) ease;
+    }
+    .project-card[data-reveal].revealed {
+      transition:
+        opacity 1100ms cubic-bezier(.16,.84,.3,1),
+        transform 520ms cubic-bezier(.16,.84,.3,1),
+        border-color var(--d-2) ease, box-shadow var(--d-2) ease, background var(--d-2) ease;
+      transition-delay: 0ms;
+    }
   }
 
   /* ===== Mobile responsive ===== */
@@ -1036,7 +1124,7 @@
     .nav-resume { padding: 8px 6px 8px 14px; font-size: 13px; }
 
     .hero { padding: 96px 0 56px; min-height: auto; }
-    .hero::after { display: none; }
+    .hero::after, .hero::before, .hero-rule, .hero-vline { display: none; }
     .hero-name { font-size: clamp(56px, 14vw, 140px); padding-top: 8px; white-space: normal; }
 
     .hero-body {
@@ -1045,9 +1133,11 @@
       gap: 28px;
     }
     .hero-blurb { max-width: 100%; }
-    .hero-blurb.left, .hero-blurb.right { justify-self: start; text-align: left; }
+    .hero-blurb.left, .hero-blurb.right { grid-column: 1; justify-self: start; align-self: auto; text-align: left; margin-bottom: 0; }
 
     .intro { padding: 96px 32px; }
+    .hiw { padding: 72px 32px 110px; }
+    .hiw-text { white-space: normal; }
     .intro-values-list { grid-template-columns: 1fr; gap: 12px; }
     .timeline-row { grid-template-columns: 140px 1fr; gap: 16px; }
 
@@ -1079,6 +1169,7 @@
 
     .hero-blob-bg.b1 { width: 540px; height: 540px; }
     .hero-blob-bg.b2 { width: 460px; height: 460px; }
+    .hero-blob-bg.b3 { width: 380px; height: 380px; }
   }
   @media (max-width: 560px) {
     .page { padding: 0 20px; }
@@ -1089,6 +1180,7 @@
 
     .hero-name { font-size: clamp(48px, 17vw, 84px); }
     .intro { padding: 64px 20px; }
+    .hiw { padding: 56px 20px 88px; }
     .footer-grid { padding: 32px 20px 24px; }
     .footer-bottom { padding: 20px 20px 48px; }
   }
@@ -1124,40 +1216,33 @@
       <span class="hero-blob-bg b3"></span>
     </div>
 
-    <h1 class="hero-name" data-reveal style="--reveal-delay: 100ms;">
+    <h1 class="hero-name" data-reveal data-parallax="0.03" style="--reveal-delay: 700ms;">
       Hi, I am <span class="first">Maria</span>
     </h1>
 
     <div class="hero-body">
-      <p class="hero-blurb left" data-reveal="up" style="--reveal-delay: 380ms;">
+      <p class="hero-blurb left" data-reveal="up" style="--reveal-delay: 1250ms;">
         Designer with <em>strengths</em> in complex systems, design tooling and generative AI product design for <em>domains</em> such as Finance, Insurance and Audit. Currently shipping at Manulife.
       </p>
 
       <div class="hero-centerpiece" aria-hidden="true"></div>
 
-      <p class="hero-blurb right" data-reveal="up" style="--reveal-delay: 540ms;">
+      <p class="hero-blurb right" data-reveal="up" style="--reveal-delay: 1250ms; margin-bottom: 60px;">
         Based in <em>Toronto</em>, designing since 2020.
       </p>
     </div>
+    <div class="hero-rule" aria-hidden="true"></div>
+    <div class="hero-vline" aria-hidden="true"></div>
   </section>
 
   <!-- ===== Intro (periwinkle contrast) ===== -->
-  <section class="intro" id="about" data-reveal>
+  <section class="intro" id="about">
     <div class="intro-inner">
       <div>
         <div class="intro-tag">About me</div>
-        <p class="intro-body">
-          Partnering with large organizations across the globe — from <em>Big 4</em> to global <em>FMCG</em> brands — to design holistic, scalable B2B and SaaS solutions. Big-picture and systems thinker, energized by complexity and challenges.
+        <p class="intro-body" data-reveal="up">
+          Partnering with large organizations across the globe — from <em>Big4</em> to <em>FMCG</em> brands — to design holistic, scalable B2B and SaaS solutions. Big-picture and systems thinker, energized by complexity and challenges.
         </p>
-
-        <div class="intro-values">
-          <ul class="intro-values-list">
-            <li>Design happens in the open</li>
-            <li>Real talk, low ego, high craft and taste</li>
-            <li>I know when AI helps — and when it doesn’t</li>
-            <li>I love shaping thoughtful experiences e2e</li>
-          </ul>
-        </div>
 
         <div class="intro-timeline">
           <div class="timeline-row">
@@ -1178,12 +1263,12 @@
   </section>
 
   <!-- ===== Projects ===== -->
-  <section class="projects" id="projects" data-reveal>
+  <section class="projects" id="projects" data-stagger>
     <div class="projects-head">
-      <h2 class="projects-title">Selected <em>projects</em></h2>
+      <h2 class="projects-title" data-reveal="up" data-parallax="0.05">Selected <em>projects</em></h2>
     </div>
 
-    <a class="project-card" href="#case-gen-ai">
+    <a class="project-card" href="#case-gen-ai" data-reveal="up" data-parallax="0.04">
       <div class="project-cover">
         <!-- TODO: replace with cover image when provided -->
         <div class="project-cover-placeholder" aria-hidden="true">
@@ -1192,7 +1277,7 @@
       </div>
       <div class="project-meta">
         <div class="project-meta-row">
-          <span class="project-kicker">Big Four client</span>
+          <span class="project-kicker">Big4 client</span>
           <span class="project-year">2023 — 2024</span>
         </div>
         <h3 class="project-name">Generative AI Portal</h3>
@@ -1203,6 +1288,20 @@
         </div>
       </div>
     </a>
+  </section>
+
+  <!-- ===== How I work (manifesto) ===== -->
+  <section class="hiw" id="how-i-work">
+    <div class="hiw-inner">
+      <div class="hiw-tag" data-reveal>How I work</div>
+      <p class="hiw-lede" data-reveal style="--reveal-delay: 80ms">Big-picture and <em>systems thinker</em>, energized by complexity and challenges.</p>
+      <div class="hiw-statements">
+        <p class="hiw-text" data-reveal style="--d:120ms; --hld:1100ms"><span class="line">Design happens <span class="hl">in the open</span></span></p>
+        <p class="hiw-text" data-reveal style="--d:220ms; --hld:1200ms"><span class="line">Low ego, <span class="hl">high craft</span> &amp; taste</span></p>
+        <p class="hiw-text" data-reveal style="--d:320ms; --hld:1300ms"><span class="line">I know when <span class="hl">AI helps</span> <span class="dim">— and when it doesn't</span></span></p>
+        <p class="hiw-text" data-reveal style="--d:420ms; --hld:1400ms"><span class="line">Shaping <span class="hl">thoughtful</span> experiences, e2e</span></p>
+      </div>
+    </div>
   </section>
 
   <!-- ===== Work (hidden — superseded by Projects, kept for later) ===== -->
@@ -1389,12 +1488,12 @@
     </div>
     <div class="footer-grid">
       <div class="footer-socials">
-        <a class="email" href="mailto:marykotsar@gmail.com"><span>Email</span><span class="arr">↗</span></a>
-        <a class="linkedin" href="https://www.linkedin.com/in/maria-kotsar/" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><span class="arr">↗</span></a>
-        <a class="dribbble" href="https://dribbble.com/marykotsar" target="_blank" rel="noopener noreferrer"><span>Dribbble</span><span class="arr">↗</span></a>
+        <a class="email" href="mailto:marykotsar@gmail.com"><span>Email</span><span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></a>
+        <a class="linkedin" href="https://www.linkedin.com/in/maria-kotsar/" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></a>
+        <a class="dribbble" href="https://dribbble.com/marykotsar" target="_blank" rel="noopener noreferrer"><span>Dribbble</span><span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></a>
       </div>
       <div class="footer-right">
-        <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+        <a class="back-top" href="#top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1411,35 +1510,97 @@
     const splash = document.getElementById('splash');
     if (!splash) return;
     const hide = () => splash.classList.add('is-hidden');
-    if (document.readyState === 'complete') setTimeout(hide, 420);
-    else window.addEventListener('load', () => setTimeout(hide, 420));
+    if (document.readyState === 'complete') setTimeout(hide, 300);
+    else window.addEventListener('load', () => setTimeout(hide, 300));
   })();
 
-  // Scroll reveal + hero gradient parallax
+  // Scroll reveal (staggered) + light scroll parallax
   (function () {
+    // Auto-stagger: sequence [data-reveal] children inside any [data-stagger] group
+    document.querySelectorAll('[data-stagger]').forEach((group) => {
+      group.querySelectorAll('[data-reveal]').forEach((el, i) => {
+        if (!el.style.getPropertyValue('--reveal-delay')) {
+          el.style.setProperty('--reveal-delay', (i * 110) + 'ms');
+        }
+      });
+    });
+
+    // Once an element's entrance finishes, flip it to snappy transform so parallax tracks
+    const markRevealed = (el) => {
+      const d = (parseFloat(getComputedStyle(el).transitionDelay) || 0) * 1000;
+      setTimeout(() => el.classList.add('revealed'), d + 1300);
+    };
+
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting) {
             e.target.classList.add('in');
+            markRevealed(e.target);
             io.unobserve(e.target);
           }
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
       document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+      // Hero intro always plays on load — its lower paragraph sits below the trigger zone.
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.hero [data-reveal]').forEach((el) => {
+          io.unobserve(el);
+          el.classList.add('in');
+          markRevealed(el);
+        });
+      });
     } else {
-      document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('in'));
+      document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('in', 'revealed'));
     }
 
+    // Light parallax: hero blobs + any [data-parallax] element (rAF-gated single handler)
     const blobs = document.querySelector('.hero-blobs');
-    if (blobs) {
-      const onP = () => {
-        const y = Math.max(0, Math.min(window.scrollY, 600));
-        blobs.style.setProperty('--parallax', (y * 0.25) + 'px');
-      };
-      onP();
-      window.addEventListener('scroll', onP, { passive: true });
-    }
+    const pxEls = document.querySelectorAll('[data-parallax]');
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        if (blobs) {
+          const y = Math.max(0, Math.min(window.scrollY, 600));
+          blobs.style.setProperty('--parallax', (y * 0.25) + 'px');
+        }
+        const vh = window.innerHeight;
+        pxEls.forEach((el) => {
+          const speed = parseFloat(el.dataset.parallax) || 0.05;
+          const r = el.getBoundingClientRect();
+          const fromCenter = (r.top + r.height / 2) - vh / 2;
+          el.style.setProperty('--py', (-fromCenter * speed).toFixed(1) + 'px');
+        });
+        ticking = false;
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+  })();
+
+  // Anchor the hero's bottom guide line to the "Based in Toronto" baseline
+  (function () {
+    const hero = document.querySelector('.hero');
+    const rb = document.querySelector('.hero-blurb.right');
+    if (!hero || !rb) return;
+    const place = () => {
+      let y = 0, node = rb;
+      // sum layout offsets up to .hero (ignores the reveal transform on the blurb)
+      while (node && node !== hero) { y += node.offsetTop; node = node.offsetParent; }
+      y += rb.offsetHeight;                            // bottom edge of the text box
+      const cs = getComputedStyle(rb);
+      const fs = parseFloat(cs.fontSize) || 16;
+      let lh = parseFloat(cs.lineHeight); if (!lh) lh = fs * 1.5;
+      const toBaseline = (lh - fs) / 2 + fs * 0.21;    // box bottom → last line's baseline (incl. line-height gap + descent)
+      hero.style.setProperty('--rule-y', (y - toBaseline) + 'px');  // words sit ON the line
+    };
+    place();
+    window.addEventListener('resize', place, { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+    setTimeout(place, 300);
   })();
 
   // Cursor-following blobs (desktop only)
@@ -1447,16 +1608,18 @@
     if (window.matchMedia('(pointer: coarse)').matches) return;
     const b1 = document.querySelector('.hero-blob-bg.b1');
     const b2 = document.querySelector('.hero-blob-bg.b2');
+    const b3 = document.querySelector('.hero-blob-bg.b3');
     if (!b1 || !b2) return;
     let raf = null;
     let tx = 0, ty = 0;
     const onMove = (e) => {
-      tx = (e.clientX / window.innerWidth  - 0.5) * 120;
-      ty = (e.clientY / window.innerHeight - 0.5) * 120;
+      tx = (e.clientX / window.innerWidth  - 0.5) * 160;
+      ty = (e.clientY / window.innerHeight - 0.5) * 160;
       if (raf) return;
       raf = requestAnimationFrame(() => {
         b1.style.translate = (tx *  1.0) + 'px ' + (ty *  0.6) + 'px';
         b2.style.translate = (tx * -0.9) + 'px ' + (ty *  1.1) + 'px';
+        if (b3) b3.style.translate = (tx *  0.5) + 'px ' + (ty * -0.8) + 'px';
         raf = null;
       });
     };
