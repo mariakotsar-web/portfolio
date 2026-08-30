@@ -135,6 +135,15 @@
     transition: color var(--d-1) var(--ease);
   }
   .nav-links a:hover { color: var(--ink); }
+  /* Resume: external link. Same shared arrow, rotated 45deg, same hover nudge
+     as the experience timeline links. */
+  .nav-links a.nav-ext { display: inline-flex; align-items: center; gap: 6px; }
+  .nav-links a.nav-ext svg {
+    width: 13px; height: 13px; flex: none;
+    transform: rotate(45deg);
+    transition: transform var(--d-1) var(--ease);
+  }
+  .nav-links a.nav-ext:hover svg { transform: translate(2px, -2px) rotate(45deg); }
 
   /* Resume CTA — accent pill with paper puck */
   .nav-resume {
@@ -616,10 +625,10 @@
   .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-sans); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); margin: 0 0 24px; }
   .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); }
   .pe { background: var(--paper); padding: 120px 0; }
-  .pe-inner { max-width: 1100px; margin: 0 auto; }
+  .pe-inner { max-width: 1240px; margin: 0 auto; }
   .pe-inner > .eyebrow { margin-bottom: 44px; }
-  .pe-grid { display: grid; grid-template-columns: 1fr max-content; gap: 48px; align-items: center; }
-  .pe-preview { position: relative; aspect-ratio: 5 / 4; }
+  .pe-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 320px); gap: 48px; align-items: center; }
+  .pe-preview { position: relative; aspect-ratio: 1440 / 900; }  /* matches the UAE.mp4 export exactly — no crop */
   .pe-visual { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--sand); opacity: 0; transform: scale(0.98); transition: opacity .5s var(--ease), transform .5s var(--ease); }
   .pe-visual.active { opacity: 1; transform: scale(1); }
   .pe-visual .bar { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 12px; border-bottom: 1px solid var(--sand); background: rgba(255,255,255,0.75); position: relative; z-index: 2; }
@@ -645,14 +654,13 @@
   .m-sys span:nth-child(1) { background: #7B8CFF; } .m-sys span:nth-child(2) { background: #C9B3FF; } .m-sys span:nth-child(3) { background: #1A1812; }
   .m-sys span:nth-child(4) { background: #9AA6FF; } .m-sys span:nth-child(5) { background: #F0F0F0; border: 1px solid var(--sand); } .m-sys span:nth-child(6) { background: #E8FF3D; }
   .pe-list ul { list-style: none; margin: 0; padding: 0; }
-  .pe-list li { padding: 14px 0; font-size: clamp(28px, 3.4vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; color: var(--ink); cursor: pointer; white-space: nowrap; transition: color .3s var(--ease); }
+  .pe-list li { padding: 14px 0; font-size: clamp(22px, 2.2vw, 30px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; color: var(--ink); cursor: pointer; white-space: normal; transition: color .3s var(--ease); }
   /* hover the list: others fade to the "— and when it doesn't" grey, hovered one goes periwinkle */
   .pe-list:hover li { color: #BBBBBB; }
   .pe-list li:hover { color: var(--accent); }
   @media (max-width: 980px) {
     .pe { padding: 80px 0; }
     .pe-grid { grid-template-columns: 1fr; gap: 28px; }
-    .pe-preview { aspect-ratio: 16/10; }
     .pe-list li { white-space: normal; }
   }
 
@@ -1237,6 +1245,192 @@
     .footer-grid { padding: 32px 20px 24px; }
     .footer-bottom { padding: 20px 20px 48px; }
   }
+
+
+  /* ===== Project preview video =====
+     Drop a file at video/<slug>.mp4 and it takes over that slot. If the file
+     is missing the <video> removes itself on error and the CSS mock comes
+     back, so the page is never broken by an absent asset. */
+  .pe-video {
+    position: absolute; inset: 0; z-index: 2;
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    background: var(--cream);
+  }
+  /* A real video replaces the mock illustration and the shimmer sweep */
+  .pe-visual .scene:has(.pe-video) .m-portal,
+  .pe-visual .scene:has(.pe-video) .m-app,
+  .pe-visual .scene:has(.pe-video) .m-sys { display: none; }
+  .pe-visual .scene:has(.pe-video)::after { display: none; }
+  .pe-visual .scene:has(.pe-video) { inset: 0; }
+  .pe-visual:has(.pe-video) .bar { display: none; }
+  /* Caption has to clear the footage, not sit on it */
+  .pe-visual .scene:has(.pe-video) ~ .pe-cap { z-index: 4; }
+
+  /* ===================== Disco mode =====================
+     One palette, one colour. Near-black ground + the acid yellow that has been
+     sitting unused in :root since the Soft Dark build. No cycling, no strobe —
+     it is a light switch, not a light show.
+
+     Contrast (measured, vs the light theme it replaces):
+       --ink on --paper .......... 17.11:1  AAA
+       --ink2 on --paper .......... 9.89:1  AAA
+       --mute on --paper .......... 4.80:1  AA
+       --paper on --accent ....... 17.20:1  AAA   (today's periwinkle: 2.62:1, below AA)
+     Every pairing improves. Nothing in the inversion is harder to read. */
+  body.disco {
+    --paper:    #0E0F0E;
+    --cream:    #17181A;
+    --sand:     #2A2C2E;
+    --mute:     #7E8078;
+    --ink2:     #B9BBB2;
+    --ink:      #F2F2EE;
+    --accent:   #E8FF3D;   /* the --yellow token, finally used */
+    --accent-2: #E8FF3D;   /* same hue: depth comes from opacity, not a second colour */
+  }
+  /* Short crossfade on the big surfaces so the flip reads as one motion */
+  body, .intro, .hiw, .footer, .pe { transition: background-color 320ms var(--ease), color 320ms var(--ease); }
+
+  /* --- Surfaces that hardcode light values and can't follow the tokens --- */
+  body.disco .hiw { background: #131412; }                     /* was #FFFFFF */
+  body.disco .m-app .phone { background: #17181A; }            /* was #fff */
+  body.disco .m-sys span:nth-child(5) { background: #17181A; } /* was #F0F0F0 */
+  body.disco .scene.s1 { background: radial-gradient(circle at 28% 24%, rgba(232,255,61,0.20), transparent 58%), linear-gradient(160deg, #17181A, #0E0F0E); }
+  body.disco .scene.s2 { background: radial-gradient(circle at 72% 28%, rgba(232,255,61,0.16), transparent 58%), linear-gradient(160deg, #0E0F0E, #17181A); }
+  body.disco .scene.s3 { background: radial-gradient(circle at 50% 80%, rgba(232,255,61,0.18), transparent 60%), linear-gradient(160deg, #17181A, #0E0F0E); }
+
+  /* Hero blobs hardcode periwinkle, so they'd stay blue on black.
+     One colour across all three — they separate by the opacity they already breathe at. */
+  body.disco .hero-blob-bg.b1,
+  body.disco .hero-blob-bg.b2,
+  body.disco .hero-blob-bg.b3 {
+    background: radial-gradient(circle at 40% 38%,
+      var(--accent) 0%,
+      color-mix(in oklab, var(--accent) 55%, transparent) 45%,
+      transparent 72%);
+  }
+
+  /* --------- The toggle: a real on/off switch, bottom-right ---------
+     role="switch" + aria-checked is the correct pattern for on/off.
+     z-index 55 clears the nav (50), stays under the splash (9999). */
+  .disco-toggle {
+    position: fixed;
+    right: 28px; bottom: 28px;
+    z-index: 55;
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 9px 10px 9px 20px;
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.42);
+    -webkit-backdrop-filter: blur(14px) saturate(1.6);
+    backdrop-filter: blur(14px) saturate(1.6);
+    box-shadow: 0 10px 30px -16px rgba(26,24,18,0.55);
+    cursor: pointer;
+    color: var(--ink);
+    transition: border-color 320ms var(--ease), background 320ms var(--ease),
+                transform 320ms var(--ease);
+  }
+  .disco-toggle:hover { transform: translateY(-2px); }
+  .disco-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  body.disco .disco-toggle {
+    background: rgba(255,255,255,0.10);
+    border-color: rgba(255,255,255,0.38);
+  }
+
+  .disco-toggle .dt-label {
+    font-family: var(--f-mono); font-size: 13px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    line-height: 1; user-select: none;
+  }
+
+  /* Track 56 wide, knob 24 inset 2 -> 28px of travel */
+  .disco-toggle .dt-track {
+    position: relative; flex: none;
+    width: 84px; height: 42px; border-radius: 999px;
+    background: rgba(26,24,18,0.16);
+    transition: background 320ms var(--ease);
+  }
+  .disco-toggle .dt-knob {
+    position: absolute; top: 2px; left: 2px;
+    width: 38px; height: 38px; border-radius: 50%;
+    overflow: hidden; background: var(--paper);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.28);
+    transition: transform 320ms cubic-bezier(.2,.8,.2,1);
+  }
+  .disco-toggle .dt-knob img {
+    width: 100%; height: 100%; display: block;
+    object-fit: cover; object-position: 50% 50%;
+    filter: grayscale(1) contrast(1.06);
+    transition: filter 420ms var(--ease);
+  }
+  /* ON */
+  .disco-toggle[aria-checked="true"] .dt-track { background: var(--accent); }
+  .disco-toggle[aria-checked="true"] .dt-knob { transform: translateX(42px); }
+  .disco-toggle[aria-checked="true"] .dt-knob img { filter: none; }
+
+
+  /* Over the accent block the glass fills with yellow, so light text on it
+     measured 1.05:1 — invisible. Same problem the nav solves with .on-light:
+     the pill inverts to a dark chip and the yellow track reads against it. */
+  body.disco .disco-toggle.on-accent {
+    background: rgba(14,15,14,0.74);
+    border-color: rgba(14,15,14,0.88);
+    color: var(--ink);
+  }
+  body.disco .disco-toggle.on-accent[aria-checked="true"] .dt-track { background: var(--accent); }
+
+  @media (prefers-reduced-motion: reduce) {
+    body, .intro, .hiw, .footer, .pe { transition: none; }
+    .disco-toggle, .disco-toggle .dt-knob, .disco-toggle .dt-track { transition: none; }
+    .disco-toggle:hover { transform: none; }
+  }
+
+  @media (max-width: 560px) {
+    .disco-toggle { right: 16px; bottom: 16px; padding: 6px 7px 6px 14px; gap: 10px; }
+    .disco-toggle .dt-label { font-size: 11px; }
+    .disco-toggle .dt-track { width: 72px; height: 36px; }
+    .disco-toggle .dt-knob { width: 32px; height: 32px; }
+    .disco-toggle[aria-checked="true"] .dt-knob { transform: translateX(36px); }
+  }
+
+  /* ============ Disco mode — contrast corrections ============
+     Root cause: the light theme's accent (periwinkle #7B8CFF) is DARK, so the
+     design decorates accent surfaces with white-alpha and frosts glass in
+     white. Acid yellow is LIGHT, and the ground flipped to black — so every
+     one of those hardcoded whites inverts its meaning. --paper/--ink follow
+     the token flip; these literals could not. All measured, all now pass. */
+
+  /* -- On the yellow About block: white-alpha -> black-alpha -- */
+  body.disco .timeline-year { color: rgba(14,15,14,0.78); }          /* was 1.07:1 */
+  body.disco .timeline-row { border-bottom-color: rgba(14,15,14,0.34); }
+  body.disco .intro-values-list li::before { background: rgba(14,15,14,0.22); }
+
+  /* -- Footer glass: white frost on black read as a light slab under light text -- */
+  body.disco .footer-socials a,
+  body.disco .back-top {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.38);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 16px rgba(0,0,0,0.35);
+  }
+  body.disco .footer-socials a .arr { border-color: rgba(255,255,255,0.38); }
+  body.disco .footer-socials a:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 8px 22px color-mix(in oklab, var(--accent) 16%, transparent); }
+
+  /* -- Projects preview: chrome and mocks were built for a light card -- */
+  body.disco .pe-cap { background: rgba(14,15,14,0.78); color: var(--ink2); }
+  body.disco .pe-visual .bar { background: rgba(255,255,255,0.05); border-bottom-color: rgba(255,255,255,0.10); }
+  body.disco .pe-visual .bar i { background: rgba(255,255,255,0.30); }
+  body.disco .m-portal .side { background: rgba(255,255,255,0.10); }
+  body.disco .m-portal .r { background: rgba(255,255,255,0.18); }
+  body.disco .m-portal .send { background: rgba(232,255,61,0.22); border-color: rgba(232,255,61,0.50); }
+  body.disco .m-app .c { background: rgba(255,255,255,0.10); }
+  body.disco .m-app .num { background: rgba(232,255,61,0.30); }
+  /* The design-system mock was six hues; disco is one colour, so it steps in alpha */
+  body.disco .m-sys span:nth-child(1) { background: rgba(232,255,61,0.85); }
+  body.disco .m-sys span:nth-child(2) { background: rgba(232,255,61,0.55); }
+  body.disco .m-sys span:nth-child(3) { background: rgba(255,255,255,0.14); }
+  body.disco .m-sys span:nth-child(4) { background: rgba(232,255,61,0.38); }
+  body.disco .m-sys span:nth-child(5) { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.16); }
+  body.disco .m-sys span:nth-child(6) { background: var(--accent); }
 </style>
 </head>
 <body>
@@ -1258,6 +1452,8 @@
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
+      <a href="Maria-Kotsar-Resume.pdf" class="nav-ext" target="_blank" rel="noopener noreferrer"
+         aria-label="Resume (opens in a new tab)">Resume<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
     </div>
   </nav>
 
@@ -1326,25 +1522,19 @@
         <div class="pe-preview" data-reveal="left">
           <div class="pe-visual active" data-i="0">
             <div class="bar"><i></i><i></i><i></i></div>
-            <div class="scene s1"><div class="m-portal"><span class="side"></span><span class="r r1"></span><span class="r r2"></span><span class="r r3"></span><span class="send"></span></div></div>
-            <span class="pe-cap">Generative AI Portal</span>
+            <div class="scene s1"><video class="pe-video" src="video/unified-advisor.mp4" poster="video/unified-advisor.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-hidden="true"></video><div class="m-portal"><span class="side"></span><span class="r r1"></span><span class="r r2"></span><span class="r r3"></span><span class="send"></span></div></div>
+            <span class="pe-cap">Unified Advisor Experience</span>
           </div>
           <div class="pe-visual" data-i="1">
             <div class="bar"><i></i><i></i><i></i></div>
-            <div class="scene s2"><div class="m-app"><span class="phone"><b class="num"></b><span class="c"></span><span class="c"></span></span></div></div>
-            <span class="pe-cap">Subscription Tracking</span>
-          </div>
-          <div class="pe-visual" data-i="2">
-            <div class="bar"><i></i><i></i><i></i></div>
-            <div class="scene s3"><div class="m-sys"><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
-            <span class="pe-cap">Design System</span>
+            <div class="scene s2"><video class="pe-video" src="video/advisor-agentic.mp4" poster="video/advisor-agentic.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-hidden="true"></video><div class="m-app"><span class="phone"><b class="num"></b><span class="c"></span><span class="c"></span></span></div></div>
+            <span class="pe-cap">Advisor Agentic Experience Concept</span>
           </div>
         </div>
         <div class="pe-list">
           <ul>
-            <li class="active" data-i="0">Generative AI Portal</li>
-            <li data-i="1">Subscription Tracking</li>
-            <li data-i="2">Design System</li>
+            <li class="active" data-i="0">Unified Advisor Experience</li>
+            <li data-i="1">Advisor Agentic Experience Concept</li>
           </ul>
         </div>
       </div>
@@ -1712,14 +1902,63 @@
     if (!list || !preview) return;
     var items = list.querySelectorAll('li');
     var visuals = preview.querySelectorAll('.pe-visual');
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // A missing file removes its own <video>, letting the CSS mock show through
+    preview.querySelectorAll('.pe-video').forEach(function (vid) {
+      vid.addEventListener('error', function () { vid.remove(); }, { once: true });
+    });
     function activate(i) {
       items.forEach(function (li, n) { li.classList.toggle('active', n === i); });
-      visuals.forEach(function (v, n) { v.classList.toggle('active', n === i); });
+      visuals.forEach(function (v, n) {
+        v.classList.toggle('active', n === i);
+        var vid = v.querySelector('.pe-video');
+        if (!vid) return;
+        if (n === i && !calm) { vid.play().catch(function () {}); }
+        else { vid.pause(); vid.currentTime = 0; }
+      });
     }
     items.forEach(function (li, i) {
       li.addEventListener('mouseenter', function () { activate(i); });
       li.addEventListener('click', function () { activate(i); });
     });
+    activate(0);
+  })();
+</script>
+
+<button class="disco-toggle" id="discoBtn" type="button" role="switch" aria-checked="false">
+  <span class="dt-label">Disco mode</span>
+  <span class="dt-track" aria-hidden="true">
+    <span class="dt-knob"><img src="portrait.jpg" alt="" width="76" height="76" decoding="async"></span>
+  </span>
+</button>
+
+<script>
+  /* Not persisted: resets on reload, so a shared link never opens in the dark.
+     Esc is the escape hatch. */
+  (function () {
+    var btn = document.getElementById('discoBtn');
+    if (!btn) return;
+    var set = function (on) {
+      document.body.classList.toggle('disco', on);
+      btn.setAttribute('aria-checked', String(on));
+    };
+    btn.addEventListener('click', function () {
+      set(!document.body.classList.contains('disco'));
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.body.classList.contains('disco')) set(false);
+    });
+    // Flag when the pill overlaps the accent block so it can invert
+    var intro = document.querySelector('.intro');
+    if (intro) {
+      var sync = function () {
+        var b = btn.getBoundingClientRect(), r = intro.getBoundingClientRect();
+        btn.classList.toggle('on-accent', r.top < b.bottom && r.bottom > b.top);
+      };
+      sync();
+      window.addEventListener('scroll', sync, { passive: true });
+      window.addEventListener('resize', sync, { passive: true });
+    }
   })();
 </script>
 
