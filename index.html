@@ -3,6 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#F0F0F0">
 <title>Maria Kotsar — Product Design Lead</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1938,9 +1943,11 @@
   (function () {
     var btn = document.getElementById('discoBtn');
     if (!btn) return;
+    var tc = document.querySelector('meta[name="theme-color"]');
     var set = function (on) {
       document.body.classList.toggle('disco', on);
       btn.setAttribute('aria-checked', String(on));
+      if (tc) tc.setAttribute('content', on ? '#0E0F0E' : '#F0F0F0');
     };
     btn.addEventListener('click', function () {
       set(!document.body.classList.contains('disco'));
